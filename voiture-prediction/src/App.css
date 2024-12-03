@@ -1,0 +1,173 @@
+body {
+  font-family: 'Roboto', sans-serif;
+  background-color: #c6deef;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  max-width: 700px;
+  margin: 20px auto;
+  background-color: rgba(0, 0, 0, 0.7);  /* Fond semi-transparent */
+  padding: 30px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+  border-radius: 8px;
+}
+
+button {
+  background-color: #ffaa00;  /* Une couleur contrastante */
+  color: #fff;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+button:hover {
+  background-color: #e68a00;  /* Variation de couleur sur hover */
+}
+
+input[type="text"],
+input[type="number"],
+select {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  display: block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.navbar {
+  background-color: rgba(28, 30, 36, 0.9); /* Navbar avec fond légèrement transparent */
+  padding: 15px;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1;
+}
+
+.navbar h6 {
+  color: #ffaa00;  /* Correspond à la couleur des boutons */
+  font-size: 1.5rem;
+  margin: 0;
+  padding-left: 10px;
+}
+
+.navbar .links {
+  display: flex;
+  gap: 20px;
+}
+
+.navbar .links a {
+  color: #ffaa00;
+  text-decoration: none;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.navbar .links a:hover {
+  color: #ffcc66;
+}
+
+.welcome {
+  text-align: center;
+  padding: 100px 20px;
+}
+
+.welcome h1 {
+  color: #ffaa00;  /* Couleur principale du logo */
+  font-size: 3rem;
+  margin-bottom: 20px;
+}
+
+.welcome p {
+  color: #ffffff;
+  font-size: 1.2rem;
+}
+
+.logo-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.logo-container img {
+  max-width: 150px;
+  height: auto;
+}
+
+.prediction-form {
+  max-width: 700px;
+  margin: 100px auto 100px;
+  padding: 40px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.prediction-form h2 {
+  text-align: center;
+  color: #ffaa00;
+  margin-bottom: 30px;
+}
+
+.prediction-form input,
+.prediction-form select {
+  width: 100%;
+  padding: 15px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+.prediction-form button {
+  width: 100%;
+  background-color: #ffaa00;
+  color: #fff;
+  border: none;
+  padding: 15px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.prediction-form button:hover {
+  background-color: #e68a00;
+}
+
+.prediction-form label {
+  color: #ffffff;
+  font-weight: bold;
+}
+
+/* Ajustements spécifiques pour les pages */
+.home-page {
+  background-image: url('/src/assets/logo.png');
+  background-size: 150px;
+  background-repeat: no-repeat;
+  background-position: top 80px center;
+}
+
+.prediction-page {
+  padding-top: 50px;
+  background-image: url('/src/assets/logo.png');
+  background-size: 100px;
+  background-repeat: no-repeat;
+  background-position: top 20px center;
+}
+
+.MuiContainer-root {
+  padding: 80px;
+}
