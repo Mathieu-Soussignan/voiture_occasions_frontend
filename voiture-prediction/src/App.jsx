@@ -20,6 +20,9 @@ function App() {
         default: darkMode ? "#121212" : "#c6deef",
       },
     },
+    typography: {
+      fontFamily: "'Poppins', sans-serif",
+    },
   });
 
   return (
