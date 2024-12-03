@@ -1,5 +1,4 @@
 import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
-import { AnimatePresence, motion } from 'framer-motion';
 import { useState } from 'react';
 import HomePage from './pages/HomePage';
 import NavBar from './pages/NavBar';
@@ -35,50 +34,13 @@ function App() {
         }}
       >
         <NavBar darkMode={darkMode} setDarkMode={setDarkMode} />
-        <AnimatePresence mode="wait">
-          <Routes location={location} key={location.pathname}>
-            <Route
-              path="/"
-              element={
-                <motion.div
-                  initial={{ opacity: 0, x: -100 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: 100 }}
-                  transition={{ duration: 0.5 }}
-                >
-                  <HomePage />
-                </motion.div>
-              }
-            />
-            <Route
-              path="/predict"
-              element={
-                <motion.div
-                  initial={{ opacity: 0, x: -100 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: 100 }}
-                  transition={{ duration: 0.5 }}
-                >
-                  <PredictionForm />
-                </motion.div>
-              }
-            />
-            <Route
-              path="/visualize"
-              element={
-                <motion.div
-                  initial={{ opacity: 0, x: -100 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: 100 }}
-                  transition={{ duration: 0.5 }}
-                >
-                  <VisualizationPage />
-                </motion.div>
-              }
-            />
-          </Routes>
-        </AnimatePresence>
-        <Footer /> {/* Ajouter le footer ici */}
+        {/* Enlever temporairement framer-motion pour tester */}
+        <Routes location={location} key={location.pathname}>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/predict" element={<PredictionForm />} />
+          <Route path="/visualize" element={<VisualizationPage />} />
+        </Routes>
+        <Footer />
       </Box>
     </ThemeProvider>
   );
