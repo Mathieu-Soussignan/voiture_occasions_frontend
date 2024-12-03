@@ -14,7 +14,7 @@ function AnnéeParMarqueChart() {
     const fetchChartData = async () => {
       try {
         const response = await axios.get(
-          `${import.meta.env.VITE_API_BASE_URL}/data/year-brand-distribution`
+          `${import.meta.env.VITE_API_BASE_URL}/data/data/year-brand-distribution`
         );
 
         if (response.data && Array.isArray(response.data) && response.data.length > 0) {

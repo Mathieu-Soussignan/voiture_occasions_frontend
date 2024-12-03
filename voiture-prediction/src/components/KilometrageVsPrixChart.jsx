@@ -16,7 +16,7 @@ function KilometrageVsPrixChart() {
     const fetchChartData = async () => {
       try {
         const response = await axios.get(
-          `${import.meta.env.VITE_API_BASE_URL}/data/clustering`
+          `${import.meta.env.VITE_API_BASE_URL}/data/data/clustering`
         );
 
         if (response.data && Array.isArray(response.data) && response.data.length > 0) {
