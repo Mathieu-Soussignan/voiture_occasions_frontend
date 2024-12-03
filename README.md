@@ -1,5 +1,3 @@
-# voitures_occasions
-Prédiction du prix des voitures d'occasion
 # Prédict Car 
 
 ### Une application de prédiction des prix des voitures d'occasion utilisant l'IA.
