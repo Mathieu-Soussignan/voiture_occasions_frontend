@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { TextField, Button, Container, Typography, Box, Paper } from '@mui/material';
 import axios from 'axios';
+import { useAuth } from '../hooks/useAuth';
 
 function RegisterPage() {
   const [formData, setFormData] = useState({
@@ -11,6 +12,7 @@ function RegisterPage() {
     password: '',
   });
   const navigate = useNavigate();
+  const { setIsLoggedIn } = useAuth();
 
   const handleChange = (e) => {
     setFormData({
@@ -22,12 +24,21 @@ function RegisterPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(`${import.meta.env.VITE_API_BASE_URL}/register`, formData);
-      alert('Inscription réussie, vous pouvez vous connecter.');
-      navigate('/login');
+      const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/register`, formData);
+      const { access_token } = response.data;
+
+      if (access_token) {
+        // Sauvegarder le token JWT
+        localStorage.setItem('token', access_token);
+        // Mettre à jour l'état de connexion
+        setIsLoggedIn(true);
+        alert('Inscription réussie, vous êtes maintenant connecté.');
+        // Rediriger vers la page de prédiction après l'inscription
+        navigate('/predict');
+      }
     } catch (error) {
-      console.error('Erreur lors de l\'inscription', error);
-      alert('Erreur lors de l\'inscription');
+      console.error("Erreur lors de l'inscription", error);
+      alert("Erreur lors de l'inscription");
     }
   };
 
