@@ -1,4 +1,4 @@
-# Prédict Car 
+# Prédict Car
 
 ### Une application de prédiction des prix des voitures d'occasion utilisant l'IA.
 
@@ -11,7 +11,9 @@ Ce projet est une application de prédiction des prix des voitures d'occasion, c
 2. **Recherche et Prédiction de Prix :** L'utilisateur peut rechercher le prix d'une voiture d'occasion en fournissant des informations telles que le kilométrage, l'année, la marque, le carburant, la transmission, le modèle et l'état du véhicule. Le modèle Random Forest est utilisé pour prédire le prix, offrant une estimation précise basée sur les caractéristiques fournies.
 3. **Classification des offres :** En plus de la prédiction de prix, le modèle de régression logistique permet de classifier l'offre comme « Bonne affaire » ou « Mauvaise affaire », donnant à l'utilisateur un indicateur supplémentaire pour évaluer la qualité de l'offre.
 4. **Visualisation des données interactives :** Utilisation de Plotly pour visualiser les données de manière interactive, permettant aux utilisateurs de mieux explorer et comprendre les tendances des prix.
-5. **Progression de Prédiction** : Ajout d'une barre de progression visible pendant le calcul de la prédiction pour améliorer l'expérience utilisateur.
+5. **Progression de Prédiction :** Ajout d'une barre de progression visible pendant le calcul de la prédiction pour améliorer l'expérience utilisateur.
+6. **Authentification et Gestion des Utilisateurs :** Système d'inscription, de connexion et de déconnexion des utilisateurs avec un stockage sécurisé des tokens JWT.
+7. **Animation lors de la Déconnexion :** Ajout d'une animation amusante avec un timer lors de la déconnexion avant la redirection vers la page de connexion.
 
 ## Technologies Utilisées
 
@@ -66,7 +68,7 @@ Ce projet est une application de prédiction des prix des voitures d'occasion, c
 5. **Lancer l'API FastAPI :**
 
    ```bash
-   uvicorn main:app --reload
+   uvicorn main:app --host 0.0.0.0 --port 8000 --reload
    ```
 
 6. **Lancer l'interface React :**
@@ -77,7 +79,7 @@ Ce projet est une application de prédiction des prix des voitures d'occasion, c
 
 ## Utilisation
 
-L'application est accessible via le frontend React, qui tourne par défaut sur `http://localhost:5173`. Utilisez le frontend pour accéder aux fonctionnalités de prédiction des prix des voitures et à la classification des offres.
+L'application est accessible via le frontend React, qui tourne par défaut sur `http://localhost:5173`. Utilisez le frontend pour accéder aux fonctionnalités de prédiction des prix des voitures, à la classification des offres, ainsi qu'à l'authentification et à la gestion des utilisateurs.
 
 ### Prédiction des Voitures d'Occasion
 
@@ -86,6 +88,7 @@ L'application est accessible via le frontend React, qui tourne par défaut sur `
 ## Schéma de la Base de Données
 
 - **Vehicule** : contient les informations sur les véhicules disponibles dans la base (marque, modèle, année, état, etc.), permettant une analyse approfondie pour chaque recherche de prédiction.
+- **Utilisateur** : contient les informations sur les utilisateurs inscrits (nom d'utilisateur, email, mot de passe haché) pour gérer l'authentification.
 
 ## Architecture du Projet
 
@@ -96,16 +99,15 @@ L'application est accessible via le frontend React, qui tourne par défaut sur `
 - **scripts/** : contient des scripts auxiliaires, comme ceux pour insérer des données dans la base de données ou scraper des informations en ligne.
 - **sql/** : contient les scripts SQL pour créer les tables de la base de données.
 - **tests/** : contient les tests unitaires pour vérifier la bonne exécution de l'application.
-- **voiture-prediction/** : Contient l'interface utilisateur développée avec React.
-- **database/** : Fichiers relatifs à la base de données, y compris la configuration de SQLAlchemy.
-- **create_db.py** : Script pour initialiser la base de données.
-
+- **voiture-prediction/** : contient l'interface utilisateur développée avec React.
+- **database/** : fichiers relatifs à la base de données, y compris la configuration de SQLAlchemy.
+- **create_db.py** : script pour initialiser la base de données.
 
 ## Documentation de l'API
 
 ### Endpoints Disponibles
 
-L'API FastAPI fournit des endpoints pour la prédiction des prix, et la gestion des véhicules. La documentation Swagger est accessible à l'adresse `http://localhost:8000/docs` lorsque le serveur est en cours d'exécution.
+L'API FastAPI fournit des endpoints pour la prédiction des prix, la gestion des véhicules et la gestion des utilisateurs. La documentation Swagger est accessible à l'adresse `http://localhost:8000/docs` lorsque le serveur est en cours d'exécution.
 
 ## Améliorations Futures
 
@@ -113,6 +115,7 @@ L'API FastAPI fournit des endpoints pour la prédiction des prix, et la gestion 
 - **Modèles de Machine Learning :** Exploration d'autres modèles plus avancés pour améliorer la précision des prédictions.
 - **Authentification :** Ajouter une authentification plus robuste pour sécuriser l'application.
 - **Système de Notification :** Ajouter des notifications push lorsque les prédictions sont prêtes.
+- **Optimisation des Performances :** Améliorer la vitesse de chargement et de traitement des données pour une meilleure expérience utilisateur.
 
 ## Crédits
 
@@ -123,7 +126,3 @@ L'API FastAPI fournit des endpoints pour la prédiction des prix, et la gestion 
   - [Mathieu Soussignan](https://www.mathieu-soussignan.com).
 
 - **Images et Logos :** Les images utilisées pour le design de l'application sont libres de droits, contribuant à une interface visuelle attrayante sans compromettre la conformité légale.
-
----
-
-Merci d'utiliser notre application de prédiction de voitures d'occasion ! N'hésitez pas à nous contacter pour toute suggestion d'amélioration, et nous espérons que notre outil vous aidera à trouver la meilleure affaire possible.

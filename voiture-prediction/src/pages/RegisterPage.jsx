@@ -10,7 +10,46 @@ function RegisterPage() {
     email: '',
     password: '',
   });
+  const [errors, setErrors] = useState({});
   const navigate = useNavigate();
+
+  const validateForm = () => {
+    const newErrors = {};
+
+    // Validation du nom d'utilisateur
+    if (!formData.username) {
+      newErrors.username = "Le nom d'utilisateur est requis.";
+    } else if (formData.username.length < 3) {
+      newErrors.username = "Le nom d'utilisateur doit comporter au moins 3 caractères.";
+    } else if (!/^[a-zA-Z0-9_]+$/.test(formData.username)) {
+      newErrors.username = "Le nom d'utilisateur ne peut contenir que des lettres, chiffres, et underscores.";
+    }
+
+    // Validation de l'email
+    if (!formData.email) {
+      newErrors.email = "L'email est requis.";
+    } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(formData.email)) {
+      newErrors.email = "Veuillez saisir un email valide.";
+    }
+
+    // Validation du mot de passe
+    if (!formData.password) {
+      newErrors.password = "Le mot de passe est requis.";
+    } else if (formData.password.length < 8) {
+      newErrors.password = "Le mot de passe doit comporter au moins 8 caractères.";
+    } else if (!/[A-Z]/.test(formData.password)) {
+      newErrors.password = "Le mot de passe doit contenir au moins une lettre majuscule.";
+    } else if (!/[a-z]/.test(formData.password)) {
+      newErrors.password = "Le mot de passe doit contenir au moins une lettre minuscule.";
+    } else if (!/[0-9]/.test(formData.password)) {
+      newErrors.password = "Le mot de passe doit contenir au moins un chiffre.";
+    } else if (!/[!@#$%^&*(),.?":{}|<>]/.test(formData.password)) {
+      newErrors.password = "Le mot de passe doit contenir au moins un caractère spécial.";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleChange = (e) => {
     setFormData({
@@ -21,6 +60,10 @@ function RegisterPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!validateForm()) {
+      return;
+    }
+
     try {
       console.log('Données envoyées :', formData); // Ajouter un log pour vérifier les données
       await axios.post(
@@ -54,6 +97,8 @@ function RegisterPage() {
               type="text"
               value={formData.username}
               onChange={handleChange}
+              error={!!errors.username}
+              helperText={errors.username}
               fullWidth
               required
             />
@@ -63,6 +108,8 @@ function RegisterPage() {
               type="email"
               value={formData.email}
               onChange={handleChange}
+              error={!!errors.email}
+              helperText={errors.email}
               fullWidth
               required
             />
@@ -72,6 +119,8 @@ function RegisterPage() {
               type="password"
               value={formData.password}
               onChange={handleChange}
+              error={!!errors.password}
+              helperText={errors.password}
               fullWidth
               required
             />
