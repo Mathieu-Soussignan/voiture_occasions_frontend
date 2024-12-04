@@ -4,9 +4,9 @@ import { AnimatePresence, motion } from 'framer-motion';
 import HomePage from './pages/HomePage';
 import NavBar from './pages/NavBar';
 import PredictionForm from './PredictionForm';
-import VisualizationPage from "./pages/VisualizationPage";
-import RegisterPage from "./pages/RegisterPage";
-import LoginPage from "./pages/LoginPage";
+import VisualizationPage from './pages/VisualizationPage';
+import RegisterPage from './pages/RegisterPage';
+import LoginPage from './pages/LoginPage';
 import Footer from './components/Footer';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { CssBaseline, Box, useMediaQuery } from '@mui/material';
@@ -21,7 +21,7 @@ function App() {
     palette: {
       mode: 'light',
       background: {
-        default: "#c6deef",
+        default: '#c6deef',
       },
     },
     typography: {

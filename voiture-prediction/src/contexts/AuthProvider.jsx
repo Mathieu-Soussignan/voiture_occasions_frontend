@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
+import { AuthContext } from './AuthContext';
 import PropTypes from 'prop-types';
-import AuthContext from './AuthContext';
 
 export function AuthProvider({ children }) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);

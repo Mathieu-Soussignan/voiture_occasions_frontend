@@ -22,31 +22,26 @@ function LoginPage({ setIsLoggedIn }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/login`, formData);
+      console.log('Données du formulaire :', formData);
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_BASE_URL}/login`,
+        formData,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+      console.log('Réponse de l\'API :', response);
+  
       const { access_token } = response.data;
-
-      if (!access_token) {
-        throw new Error('Le token JWT est manquant dans la réponse de l\'API.');
-      }
-
       // Sauvegarder le token JWT
       localStorage.setItem('token', access_token);
-
-      // Définir l'utilisateur comme connecté
-      setIsLoggedIn(true);
-
-      // Rediriger vers la page de prédiction après la connexion
-      navigate('/predict');
-
       alert('Connexion réussie !');
+      navigate('/predict'); // Rediriger vers la page de prédiction après la connexion
     } catch (error) {
-      if (error.response) {
-        console.error('Erreur réponse API', error.response.data);
-        alert(`Erreur: ${error.response.data.detail || 'Impossible de se connecter'}`);
-      } else {
-        console.error('Erreur réseau ou autre', error.message);
-        alert('Erreur réseau, veuillez vérifier votre connexion.');
-      }
+      console.error('Erreur lors de la connexion', error);
+      alert('Erreur lors de la connexion');
     }
   };
 
