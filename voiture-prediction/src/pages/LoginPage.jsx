@@ -2,9 +2,10 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { TextField, Button, Container, Typography, Box, Paper } from '@mui/material';
+import PropTypes from 'prop-types';
 import axios from 'axios';
 
-function LoginPage() {
+function LoginPage({ setIsLoggedIn }) {
   const [formData, setFormData] = useState({
     username: '',
     password: ''
@@ -23,13 +24,29 @@ function LoginPage() {
     try {
       const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/login`, formData);
       const { access_token } = response.data;
+
+      if (!access_token) {
+        throw new Error('Le token JWT est manquant dans la réponse de l\'API.');
+      }
+
       // Sauvegarder le token JWT
       localStorage.setItem('token', access_token);
+
+      // Définir l'utilisateur comme connecté
+      setIsLoggedIn(true);
+
+      // Rediriger vers la page de prédiction après la connexion
+      navigate('/predict');
+
       alert('Connexion réussie !');
-      navigate('/predict'); // Rediriger vers la page de prédiction après la connexion
     } catch (error) {
-      console.error('Erreur lors de la connexion', error);
-      alert('Erreur lors de la connexion');
+      if (error.response) {
+        console.error('Erreur réponse API', error.response.data);
+        alert(`Erreur: ${error.response.data.detail || 'Impossible de se connecter'}`);
+      } else {
+        console.error('Erreur réseau ou autre', error.message);
+        alert('Erreur réseau, veuillez vérifier votre connexion.');
+      }
     }
   };
 
@@ -73,5 +90,9 @@ function LoginPage() {
     </Container>
   );
 }
+
+LoginPage.propTypes = {
+  setIsLoggedIn: PropTypes.func.isRequired
+};
 
 export default LoginPage;
