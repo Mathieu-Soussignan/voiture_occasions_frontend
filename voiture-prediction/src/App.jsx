@@ -1,7 +1,7 @@
 // src/App.jsx
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import HomePage from './pages/HomePage';
 import NavBar from './pages/NavBar';
 import PredictionForm from './PredictionForm';
@@ -9,25 +9,23 @@ import VisualizationPage from "./pages/VisualizationPage";
 import RegisterPage from "./pages/RegisterPage";
 import LoginPage from "./pages/LoginPage";
 import Footer from './components/Footer';
+import { useAuth } from './hooks/useAuth';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { CssBaseline, Box, useMediaQuery } from '@mui/material';
 
 function App() {
-  const [darkMode, setDarkMode] = useState(false);
+  const { isLoggedIn } = useAuth();
   const isMobile = useMediaQuery('(max-width:600px)');
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  // Vérifier si un token est présent dans le localStorage au chargement initial
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    setIsLoggedIn(!!token);
+    // Vérifier l'état initial de connexion pour ajuster l'affichage
   }, []);
 
   const theme = createTheme({
     palette: {
-      mode: darkMode ? 'dark' : 'light',
+      mode: 'light',
       background: {
-        default: darkMode ? "#121212" : "#c6deef",
+        default: "#c6deef",
       },
     },
     typography: {
@@ -64,10 +62,9 @@ function App() {
           justifyContent: 'space-between',
         }}
       >
-        <NavBar darkMode={darkMode} setDarkMode={setDarkMode} setIsLoggedIn={setIsLoggedIn} isLoggedIn={isLoggedIn} />
+        <NavBar />
         <AnimatePresence mode="wait">
           <Routes>
-            {/* Si l'utilisateur n'est pas connecté, il est redirigé vers /login */}
             {!isLoggedIn ? (
               <>
                 <Route
@@ -79,7 +76,7 @@ function App() {
                       exit={{ opacity: 0, x: 100 }}
                       transition={{ duration: 0.5 }}
                     >
-                      <LoginPage setIsLoggedIn={setIsLoggedIn} />
+                      <LoginPage />
                     </motion.div>
                   }
                 />
@@ -100,7 +97,6 @@ function App() {
               </>
             ) : (
               <>
-                {/* Si l'utilisateur est connecté, il peut accéder aux autres pages */}
                 <Route
                   path="/"
                   element={
