@@ -24,21 +24,34 @@ function RegisterPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/register`, formData);
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_BASE_URL}/register`,
+        {
+          username: formData.username,
+          email: formData.email,
+          password: formData.password,
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
       const { access_token } = response.data;
-
+  
       if (access_token) {
-        // Sauvegarder le token JWT
         localStorage.setItem('token', access_token);
-        // Mettre à jour l'état de connexion
         setIsLoggedIn(true);
         alert('Inscription réussie, vous êtes maintenant connecté.');
-        // Rediriger vers la page de prédiction après l'inscription
         navigate('/predict');
       }
     } catch (error) {
       console.error("Erreur lors de l'inscription", error);
-      alert("Erreur lors de l'inscription");
+      if (error.response && error.response.data) {
+        alert(`Erreur lors de l'inscription: ${error.response.data.message}`);
+      } else {
+        alert("Erreur lors de l'inscription");
+      }
     }
   };
 
