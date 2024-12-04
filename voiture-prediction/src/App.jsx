@@ -17,8 +17,8 @@ function App() {
   const isMobile = useMediaQuery('(max-width:600px)');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+  // Vérifier si un token est présent dans le localStorage au chargement initial
   useEffect(() => {
-    // Vérifier si un token est présent dans le localStorage pour maintenir l'état de connexion
     const token = localStorage.getItem('token');
     setIsLoggedIn(!!token);
   }, []);
@@ -67,6 +67,7 @@ function App() {
         <NavBar darkMode={darkMode} setDarkMode={setDarkMode} setIsLoggedIn={setIsLoggedIn} isLoggedIn={isLoggedIn} />
         <AnimatePresence mode="wait">
           <Routes>
+            {/* Si l'utilisateur n'est pas connecté, il est redirigé vers /login */}
             {!isLoggedIn ? (
               <>
                 <Route
@@ -99,6 +100,7 @@ function App() {
               </>
             ) : (
               <>
+                {/* Si l'utilisateur est connecté, il peut accéder aux autres pages */}
                 <Route
                   path="/"
                   element={
