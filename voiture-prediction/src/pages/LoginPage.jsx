@@ -1,5 +1,7 @@
+// src/pages/LoginPage.jsx
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
+import { TextField, Button, Container, Typography, Box, Paper } from '@mui/material';
 import axios from 'axios';
 
 function LoginPage() {
@@ -24,7 +26,7 @@ function LoginPage() {
       // Sauvegarder le token JWT
       localStorage.setItem('token', access_token);
       alert('Connexion réussie !');
-      navigate('/');
+      navigate('/predict'); // Rediriger vers la page de prédiction après la connexion
     } catch (error) {
       console.error('Erreur lors de la connexion', error);
       alert('Erreur lors de la connexion');
@@ -32,28 +34,43 @@ function LoginPage() {
   };
 
   return (
-    <div>
-      <h2>Connexion</h2>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          name="username"
-          placeholder="Nom d'utilisateur"
-          value={formData.username}
-          onChange={handleChange}
-          required
-        />
-        <input
-          type="password"
-          name="password"
-          placeholder="Mot de passe"
-          value={formData.password}
-          onChange={handleChange}
-          required
-        />
-        <button type="submit">Se connecter</button>
-      </form>
-    </div>
+    <Container maxWidth="sm">
+      <Paper elevation={3} sx={{ padding: 4, mt: 8 }}>
+        <Typography variant="h4" gutterBottom align="center">
+          Connexion
+        </Typography>
+        <form onSubmit={handleSubmit}>
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+            <TextField
+              label="Nom d'utilisateur"
+              name="username"
+              type="text"
+              value={formData.username}
+              onChange={handleChange}
+              fullWidth
+              required
+            />
+            <TextField
+              label="Mot de passe"
+              name="password"
+              type="password"
+              value={formData.password}
+              onChange={handleChange}
+              fullWidth
+              required
+            />
+            <Button type="submit" variant="contained" color="primary" fullWidth>
+              Se connecter
+            </Button>
+          </Box>
+        </form>
+        <Box mt={3} textAlign="center">
+          <Typography variant="body1">
+            Pas encore de compte ? <Link to="/register">Inscrivez-vous ici</Link>
+          </Typography>
+        </Box>
+      </Paper>
+    </Container>
   );
 }
 
