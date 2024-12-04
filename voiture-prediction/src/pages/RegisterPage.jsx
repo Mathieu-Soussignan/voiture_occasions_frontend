@@ -3,7 +3,6 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { TextField, Button, Container, Typography, Box, Paper } from '@mui/material';
 import axios from 'axios';
-import { useAuth } from '../hooks/useAuth';
 
 function RegisterPage() {
   const [formData, setFormData] = useState({
@@ -12,7 +11,6 @@ function RegisterPage() {
     password: '',
   });
   const navigate = useNavigate();
-  const { setIsLoggedIn } = useAuth();
 
   const handleChange = (e) => {
     setFormData({
@@ -24,34 +22,21 @@ function RegisterPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(
+      console.log('Données envoyées :', formData); // Ajouter un log pour vérifier les données
+      await axios.post(
         `${import.meta.env.VITE_API_BASE_URL}/register`,
-        {
-          username: formData.username,
-          email: formData.email,
-          password: formData.password,
-        },
+        formData,
         {
           headers: {
-            'Content-Type': 'application/json',
+            'Content-Type': 'application/json', // S'assurer que les en-têtes sont bien définis
           },
         }
       );
-      const { access_token } = response.data;
-  
-      if (access_token) {
-        localStorage.setItem('token', access_token);
-        setIsLoggedIn(true);
-        alert('Inscription réussie, vous êtes maintenant connecté.');
-        navigate('/predict');
-      }
+      alert('Inscription réussie, vous pouvez vous connecter.');
+      navigate('/login');
     } catch (error) {
-      console.error("Erreur lors de l'inscription", error);
-      if (error.response && error.response.data) {
-        alert(`Erreur lors de l'inscription: ${error.response.data.message}`);
-      } else {
-        alert("Erreur lors de l'inscription");
-      }
+      console.error('Erreur lors de l\'inscription', error);
+      alert(`Erreur lors de l'inscription: ${error.response ? error.response.data.message : 'undefined'}`);
     }
   };
 
