@@ -24,6 +24,11 @@ function App() {
     setIsLoggedIn(!!token);
   }, []);
 
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    setIsLoggedIn(false);
+  };
+
   const theme = createTheme({
     palette: {
       mode: darkMode ? 'dark' : 'light',
@@ -65,94 +70,83 @@ function App() {
           justifyContent: 'space-between',
         }}
       >
-        <NavBar darkMode={darkMode} setDarkMode={setDarkMode} setIsLoggedIn={setIsLoggedIn} />
+        <NavBar darkMode={darkMode} setDarkMode={setDarkMode} setIsLoggedIn={handleLogout} />
         <AnimatePresence mode="wait">
           <Routes location={location} key={location.pathname}>
-            <Route
-              path="/"
-              element={
-                isLoggedIn ? (
-                  <motion.div
-                    initial={{ opacity: 0, x: -100 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: 100 }}
-                    transition={{ duration: 0.5 }}
-                  >
-                    <HomePage />
-                  </motion.div>
-                ) : (
-                  <Navigate to="/login" />
-                )
-              }
-            />
-            <Route
-              path="/predict"
-              element={
-                isLoggedIn ? (
-                  <motion.div
-                    initial={{ opacity: 0, x: -100 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: 100 }}
-                    transition={{ duration: 0.5 }}
-                  >
-                    <PredictionForm />
-                  </motion.div>
-                ) : (
-                  <Navigate to="/login" />
-                )
-              }
-            />
-            <Route
-              path="/visualize"
-              element={
-                isLoggedIn ? (
-                  <motion.div
-                    initial={{ opacity: 0, x: -100 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: 100 }}
-                    transition={{ duration: 0.5 }}
-                  >
-                    <VisualizationPage />
-                  </motion.div>
-                ) : (
-                  <Navigate to="/login" />
-                )
-              }
-            />
-            <Route
-              path="/login"
-              element={
-                !isLoggedIn ? (
-                  <motion.div
-                    initial={{ opacity: 0, x: -100 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: 100 }}
-                    transition={{ duration: 0.5 }}
-                  >
-                    <LoginPage setIsLoggedIn={setIsLoggedIn} />
-                  </motion.div>
-                ) : (
-                  <Navigate to="/predict" />
-                )
-              }
-            />
-            <Route
-              path="/register"
-              element={
-                !isLoggedIn ? (
-                  <motion.div
-                    initial={{ opacity: 0, x: -100 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: 100 }}
-                    transition={{ duration: 0.5 }}
-                  >
-                    <RegisterPage />
-                  </motion.div>
-                ) : (
-                  <Navigate to="/predict" />
-                )
-              }
-            />
+            {isLoggedIn ? (
+              <>
+                <Route
+                  path="/"
+                  element={
+                    <motion.div
+                      initial={{ opacity: 0, x: -100 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: 100 }}
+                      transition={{ duration: 0.5 }}
+                    >
+                      <HomePage />
+                    </motion.div>
+                  }
+                />
+                <Route
+                  path="/predict"
+                  element={
+                    <motion.div
+                      initial={{ opacity: 0, x: -100 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: 100 }}
+                      transition={{ duration: 0.5 }}
+                    >
+                      <PredictionForm />
+                    </motion.div>
+                  }
+                />
+                <Route
+                  path="/visualize"
+                  element={
+                    <motion.div
+                      initial={{ opacity: 0, x: -100 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: 100 }}
+                      transition={{ duration: 0.5 }}
+                    >
+                      <VisualizationPage />
+                    </motion.div>
+                  }
+                />
+                <Route path="*" element={<Navigate to="/" />} />
+              </>
+            ) : (
+              <>
+                <Route
+                  path="/login"
+                  element={
+                    <motion.div
+                      initial={{ opacity: 0, x: -100 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: 100 }}
+                      transition={{ duration: 0.5 }}
+                    >
+                      <LoginPage setIsLoggedIn={setIsLoggedIn} />
+                    </motion.div>
+                  }
+                />
+                <Route
+                  path="/register"
+                  element={
+                    <motion.div
+                      initial={{ opacity: 0, x: -100 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: 100 }}
+                      transition={{ duration: 0.5 }}
+                    >
+                      <RegisterPage />
+                    </motion.div>
+                  }
+                />
+                <Route path="*" element={<Navigate to="/login" />} />
+              </>
+            )}
           </Routes>
         </AnimatePresence>
         <Footer />
