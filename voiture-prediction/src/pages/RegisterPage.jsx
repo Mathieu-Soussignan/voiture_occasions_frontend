@@ -1,12 +1,14 @@
+// src/pages/RegisterPage.jsx
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { TextField, Button, Container, Typography, Box, Paper } from '@mui/material';
 import axios from 'axios';
 
 function RegisterPage() {
   const [formData, setFormData] = useState({
     username: '',
     email: '',
-    password: ''
+    password: '',
   });
   const navigate = useNavigate();
 
@@ -21,8 +23,8 @@ function RegisterPage() {
     e.preventDefault();
     try {
       await axios.post(`${import.meta.env.VITE_API_BASE_URL}/register`, formData);
-      alert('Inscription réussie ! Veuillez vous connecter.');
-      navigate('/');
+      alert('Inscription réussie, vous pouvez vous connecter.');
+      navigate('/login');
     } catch (error) {
       console.error('Erreur lors de l\'inscription', error);
       alert('Erreur lors de l\'inscription');
@@ -30,36 +32,47 @@ function RegisterPage() {
   };
 
   return (
-    <div>
-      <h2>Inscription</h2>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          name="username"
-          placeholder="Nom d'utilisateur"
-          value={formData.username}
-          onChange={handleChange}
-          required
-        />
-        <input
-          type="email"
-          name="email"
-          placeholder="Email"
-          value={formData.email}
-          onChange={handleChange}
-          required
-        />
-        <input
-          type="password"
-          name="password"
-          placeholder="Mot de passe"
-          value={formData.password}
-          onChange={handleChange}
-          required
-        />
-        <button type="submit">S&apos;inscrire</button>
-      </form>
-    </div>
+    <Container maxWidth="sm">
+      <Paper elevation={3} sx={{ padding: 4, mt: 8 }}>
+        <Typography variant="h4" gutterBottom align="center">
+          Inscription
+        </Typography>
+        <form onSubmit={handleSubmit}>
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+            <TextField
+              label="Nom d'utilisateur"
+              name="username"
+              type="text"
+              value={formData.username}
+              onChange={handleChange}
+              fullWidth
+              required
+            />
+            <TextField
+              label="Email"
+              name="email"
+              type="email"
+              value={formData.email}
+              onChange={handleChange}
+              fullWidth
+              required
+            />
+            <TextField
+              label="Mot de passe"
+              name="password"
+              type="password"
+              value={formData.password}
+              onChange={handleChange}
+              fullWidth
+              required
+            />
+            <Button type="submit" variant="contained" color="primary" fullWidth>
+              S&apos;inscrire
+            </Button>
+          </Box>
+        </form>
+      </Paper>
+    </Container>
   );
 }
 

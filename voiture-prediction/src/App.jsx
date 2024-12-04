@@ -1,5 +1,5 @@
 // src/App.jsx
-import { BrowserRouter as Router, Route, Routes, useLocation, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, useLocation, Navigate, useNavigate } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
 import HomePage from './pages/HomePage';
@@ -14,6 +14,7 @@ import { CssBaseline, Box, useMediaQuery } from '@mui/material';
 
 function App() {
   const location = useLocation();
+  const navigate = useNavigate();
   const [darkMode, setDarkMode] = useState(false);
   const isMobile = useMediaQuery('(max-width:600px)');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -21,7 +22,12 @@ function App() {
   useEffect(() => {
     const token = localStorage.getItem('token');
     setIsLoggedIn(!!token);
-  }, []);
+    if (token) {
+      navigate('/predict'); // Rediriger automatiquement vers la page de prédiction si l'utilisateur est connecté
+    } else {
+      navigate('/login'); // Rediriger vers login si pas de token
+    }
+  }, [isLoggedIn, navigate]);
 
   const theme = createTheme({
     palette: {
@@ -64,7 +70,7 @@ function App() {
           justifyContent: 'space-between',
         }}
       >
-        <NavBar darkMode={darkMode} setDarkMode={setDarkMode} />
+        <NavBar darkMode={darkMode} setDarkMode={setDarkMode} setIsLoggedIn={setIsLoggedIn} />
         <AnimatePresence mode="wait">
           <Routes location={location} key={location.pathname}>
             {isLoggedIn ? (
@@ -112,10 +118,6 @@ function App() {
             ) : (
               <>
                 <Route
-                  path="/"
-                  element={<Navigate to="/login" />}
-                />
-                <Route
                   path="/login"
                   element={
                     <motion.div
@@ -124,7 +126,7 @@ function App() {
                       exit={{ opacity: 0, x: 100 }}
                       transition={{ duration: 0.5 }}
                     >
-                      <LoginPage />
+                      <LoginPage setIsLoggedIn={setIsLoggedIn} />
                     </motion.div>
                   }
                 />
@@ -141,6 +143,7 @@ function App() {
                     </motion.div>
                   }
                 />
+                <Route path="*" element={<Navigate to="/login" />} />
               </>
             )}
           </Routes>
