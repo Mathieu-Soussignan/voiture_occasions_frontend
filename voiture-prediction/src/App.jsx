@@ -11,17 +11,21 @@ import Footer from './components/Footer';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { CssBaseline, Box, useMediaQuery } from '@mui/material';
 import { useAuth } from './hooks/useAuth';
+import { useState } from 'react';
 
 function App() {
   const location = useLocation();
   const { isLoggedIn } = useAuth();
   const isMobile = useMediaQuery('(max-width:600px)');
+  
+  // Création de l'état pour gérer le mode sombre
+  const [darkMode, setDarkMode] = useState(false);
 
   const theme = createTheme({
     palette: {
-      mode: 'light',
+      mode: darkMode ? 'dark' : 'light',
       background: {
-        default: '#c6deef',
+        default: darkMode ? '#303030' : '#c6deef',
       },
     },
     typography: {
@@ -58,7 +62,7 @@ function App() {
           justifyContent: 'space-between',
         }}
       >
-        <NavBar />
+        <NavBar darkMode={darkMode} setDarkMode={setDarkMode} />
         <AnimatePresence mode="wait">
           <Routes location={location} key={location.pathname}>
             {isLoggedIn ? (

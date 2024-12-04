@@ -14,16 +14,22 @@ export default function NavBar({ darkMode, setDarkMode }) {
   const navigate = useNavigate();
   const [showLogoutTimer, setShowLogoutTimer] = useState(false);
 
+  // Fonction pour gérer la déconnexion avec animation
   const handleLogout = () => {
     localStorage.removeItem('token');
     setIsLoggedIn(false);
 
-    // Affiche le timer avant la redirection
+    // Afficher le timer avant la redirection
     setShowLogoutTimer(true);
     setTimeout(() => {
       setShowLogoutTimer(false);
       navigate('/login');
     }, 3000); // 3 secondes de délai
+  };
+
+  // Fonction pour gérer le changement de thème
+  const handleToggleTheme = () => {
+    setDarkMode(prevMode => !prevMode);
   };
 
   return (
@@ -59,7 +65,7 @@ export default function NavBar({ darkMode, setDarkMode }) {
           {/* Toggle Dark/Light Mode */}
           <Switch
             checked={darkMode}
-            onChange={() => setDarkMode(!darkMode)}
+            onChange={handleToggleTheme}
             color="default"
           />
 
@@ -87,6 +93,7 @@ export default function NavBar({ darkMode, setDarkMode }) {
             right: 16,
             backgroundColor: 'white',
           }}
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
         >
           <ArrowUpwardIcon />
         </IconButton>
