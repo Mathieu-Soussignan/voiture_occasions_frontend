@@ -1,7 +1,7 @@
 // src/App.jsx
-import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Navigate, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
-import { useEffect } from 'react';
+// import { useEffect } from 'react';
 import HomePage from './pages/HomePage';
 import NavBar from './pages/NavBar';
 import PredictionForm from './PredictionForm';
@@ -9,17 +9,14 @@ import VisualizationPage from "./pages/VisualizationPage";
 import RegisterPage from "./pages/RegisterPage";
 import LoginPage from "./pages/LoginPage";
 import Footer from './components/Footer';
-import { useAuth } from './hooks/useAuth';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { CssBaseline, Box, useMediaQuery } from '@mui/material';
+import { useAuth } from './contexts/AuthContext';
 
 function App() {
+  const location = useLocation();
   const { isLoggedIn } = useAuth();
   const isMobile = useMediaQuery('(max-width:600px)');
-
-  useEffect(() => {
-    // Vérifier l'état initial de connexion pour ajuster l'affichage
-  }, []);
 
   const theme = createTheme({
     palette: {
@@ -64,38 +61,8 @@ function App() {
       >
         <NavBar />
         <AnimatePresence mode="wait">
-          <Routes>
-            {!isLoggedIn ? (
-              <>
-                <Route
-                  path="/login"
-                  element={
-                    <motion.div
-                      initial={{ opacity: 0, x: -100 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      exit={{ opacity: 0, x: 100 }}
-                      transition={{ duration: 0.5 }}
-                    >
-                      <LoginPage />
-                    </motion.div>
-                  }
-                />
-                <Route
-                  path="/register"
-                  element={
-                    <motion.div
-                      initial={{ opacity: 0, x: -100 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      exit={{ opacity: 0, x: 100 }}
-                      transition={{ duration: 0.5 }}
-                    >
-                      <RegisterPage />
-                    </motion.div>
-                  }
-                />
-                <Route path="*" element={<Navigate to="/login" />} />
-              </>
-            ) : (
+          <Routes location={location} key={location.pathname}>
+            {isLoggedIn ? (
               <>
                 <Route
                   path="/"
@@ -137,6 +104,36 @@ function App() {
                   }
                 />
                 <Route path="*" element={<Navigate to="/" />} />
+              </>
+            ) : (
+              <>
+                <Route
+                  path="/login"
+                  element={
+                    <motion.div
+                      initial={{ opacity: 0, x: -100 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: 100 }}
+                      transition={{ duration: 0.5 }}
+                    >
+                      <LoginPage />
+                    </motion.div>
+                  }
+                />
+                <Route
+                  path="/register"
+                  element={
+                    <motion.div
+                      initial={{ opacity: 0, x: -100 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: 100 }}
+                      transition={{ duration: 0.5 }}
+                    >
+                      <RegisterPage />
+                    </motion.div>
+                  }
+                />
+                <Route path="*" element={<Navigate to="/login" />} />
               </>
             )}
           </Routes>
