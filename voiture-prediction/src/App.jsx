@@ -1,7 +1,6 @@
 // src/App.jsx
-import { BrowserRouter as Router, Route, Routes, useLocation, Navigate} from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, useLocation, Navigate } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
-// import { useState, useEffect } from 'react';
 import HomePage from './pages/HomePage';
 import NavBar from './pages/NavBar';
 import PredictionForm from './PredictionForm';
