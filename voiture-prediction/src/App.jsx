@@ -1,5 +1,5 @@
 // src/App.jsx
-import { BrowserRouter as Router, Route, Routes, useLocation, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
 import HomePage from './pages/HomePage';
@@ -13,21 +13,15 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { CssBaseline, Box, useMediaQuery } from '@mui/material';
 
 function App() {
-  const location = useLocation();
   const [darkMode, setDarkMode] = useState(false);
   const isMobile = useMediaQuery('(max-width:600px)');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  // Vérification de l'état de connexion lors du chargement de l'application
   useEffect(() => {
+    // Vérifier si un token est présent dans le localStorage pour maintenir l'état de connexion
     const token = localStorage.getItem('token');
     setIsLoggedIn(!!token);
   }, []);
-
-  const handleLogout = () => {
-    localStorage.removeItem('token');
-    setIsLoggedIn(false);
-  };
 
   const theme = createTheme({
     palette: {
@@ -70,10 +64,40 @@ function App() {
           justifyContent: 'space-between',
         }}
       >
-        <NavBar darkMode={darkMode} setDarkMode={setDarkMode} setIsLoggedIn={handleLogout} />
+        <NavBar darkMode={darkMode} setDarkMode={setDarkMode} setIsLoggedIn={setIsLoggedIn} isLoggedIn={isLoggedIn} />
         <AnimatePresence mode="wait">
-          <Routes location={location} key={location.pathname}>
-            {isLoggedIn ? (
+          <Routes>
+            {!isLoggedIn ? (
+              <>
+                <Route
+                  path="/login"
+                  element={
+                    <motion.div
+                      initial={{ opacity: 0, x: -100 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: 100 }}
+                      transition={{ duration: 0.5 }}
+                    >
+                      <LoginPage setIsLoggedIn={setIsLoggedIn} />
+                    </motion.div>
+                  }
+                />
+                <Route
+                  path="/register"
+                  element={
+                    <motion.div
+                      initial={{ opacity: 0, x: -100 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: 100 }}
+                      transition={{ duration: 0.5 }}
+                    >
+                      <RegisterPage />
+                    </motion.div>
+                  }
+                />
+                <Route path="*" element={<Navigate to="/login" />} />
+              </>
+            ) : (
               <>
                 <Route
                   path="/"
@@ -115,36 +139,6 @@ function App() {
                   }
                 />
                 <Route path="*" element={<Navigate to="/" />} />
-              </>
-            ) : (
-              <>
-                <Route
-                  path="/login"
-                  element={
-                    <motion.div
-                      initial={{ opacity: 0, x: -100 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      exit={{ opacity: 0, x: 100 }}
-                      transition={{ duration: 0.5 }}
-                    >
-                      <LoginPage setIsLoggedIn={setIsLoggedIn} />
-                    </motion.div>
-                  }
-                />
-                <Route
-                  path="/register"
-                  element={
-                    <motion.div
-                      initial={{ opacity: 0, x: -100 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      exit={{ opacity: 0, x: 100 }}
-                      transition={{ duration: 0.5 }}
-                    >
-                      <RegisterPage />
-                    </motion.div>
-                  }
-                />
-                <Route path="*" element={<Navigate to="/login" />} />
               </>
             )}
           </Routes>
