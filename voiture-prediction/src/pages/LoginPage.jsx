@@ -1,16 +1,16 @@
-// src/pages/LoginPage.jsx
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { TextField, Button, Container, Typography, Box, Paper } from '@mui/material';
-import PropTypes from 'prop-types';
 import axios from 'axios';
+import { useAuth } from '../hooks/useAuth';
 
-function LoginPage({ setIsLoggedIn }) {
+function LoginPage() {
   const [formData, setFormData] = useState({
     username: '',
     password: ''
   });
   const navigate = useNavigate();
+  const { setIsLoggedIn } = useAuth();
 
   const handleChange = (e) => {
     setFormData({
@@ -22,23 +22,14 @@ function LoginPage({ setIsLoggedIn }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      console.log('Données du formulaire :', formData);
-      const response = await axios.post(
-        `${import.meta.env.VITE_API_BASE_URL}/login`,
-        formData,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        }
-      );
-      console.log('Réponse de l\'API :', response);
-  
+      const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/login`, formData);
       const { access_token } = response.data;
       // Sauvegarder le token JWT
       localStorage.setItem('token', access_token);
-      alert('Connexion réussie !');
-      navigate('/predict'); // Rediriger vers la page de prédiction après la connexion
+      // Mettre à jour l'état de connexion
+      setIsLoggedIn(true);
+      // Rediriger vers la page de prédiction après la connexion
+      navigate('/predict');
     } catch (error) {
       console.error('Erreur lors de la connexion', error);
       alert('Erreur lors de la connexion');
@@ -85,9 +76,5 @@ function LoginPage({ setIsLoggedIn }) {
     </Container>
   );
 }
-
-LoginPage.propTypes = {
-  setIsLoggedIn: PropTypes.func.isRequired
-};
 
 export default LoginPage;
