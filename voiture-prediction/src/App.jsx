@@ -1,5 +1,5 @@
 // src/App.jsx
-import { BrowserRouter as Router, Route, Routes, useLocation, Navigate, useNavigate } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, useLocation, Navigate } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
 import HomePage from './pages/HomePage';
@@ -14,20 +14,15 @@ import { CssBaseline, Box, useMediaQuery } from '@mui/material';
 
 function App() {
   const location = useLocation();
-  const navigate = useNavigate();
   const [darkMode, setDarkMode] = useState(false);
   const isMobile = useMediaQuery('(max-width:600px)');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+  // Vérification de l'état de connexion lors du chargement de l'application
   useEffect(() => {
     const token = localStorage.getItem('token');
     setIsLoggedIn(!!token);
-    if (token) {
-      navigate('/predict'); // Rediriger automatiquement vers la page de prédiction si l'utilisateur est connecté
-    } else {
-      navigate('/login'); // Rediriger vers login si pas de token
-    }
-  }, [isLoggedIn, navigate]);
+  }, []);
 
   const theme = createTheme({
     palette: {
@@ -73,79 +68,91 @@ function App() {
         <NavBar darkMode={darkMode} setDarkMode={setDarkMode} setIsLoggedIn={setIsLoggedIn} />
         <AnimatePresence mode="wait">
           <Routes location={location} key={location.pathname}>
-            {isLoggedIn ? (
-              <>
-                <Route
-                  path="/"
-                  element={
-                    <motion.div
-                      initial={{ opacity: 0, x: -100 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      exit={{ opacity: 0, x: 100 }}
-                      transition={{ duration: 0.5 }}
-                    >
-                      <HomePage />
-                    </motion.div>
-                  }
-                />
-                <Route
-                  path="/predict"
-                  element={
-                    <motion.div
-                      initial={{ opacity: 0, x: -100 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      exit={{ opacity: 0, x: 100 }}
-                      transition={{ duration: 0.5 }}
-                    >
-                      <PredictionForm />
-                    </motion.div>
-                  }
-                />
-                <Route
-                  path="/visualize"
-                  element={
-                    <motion.div
-                      initial={{ opacity: 0, x: -100 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      exit={{ opacity: 0, x: 100 }}
-                      transition={{ duration: 0.5 }}
-                    >
-                      <VisualizationPage />
-                    </motion.div>
-                  }
-                />
-              </>
-            ) : (
-              <>
-                <Route
-                  path="/login"
-                  element={
-                    <motion.div
-                      initial={{ opacity: 0, x: -100 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      exit={{ opacity: 0, x: 100 }}
-                      transition={{ duration: 0.5 }}
-                    >
-                      <LoginPage setIsLoggedIn={setIsLoggedIn} />
-                    </motion.div>
-                  }
-                />
-                <Route
-                  path="/register"
-                  element={
-                    <motion.div
-                      initial={{ opacity: 0, x: -100 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      exit={{ opacity: 0, x: 100 }}
-                      transition={{ duration: 0.5 }}
-                    >
-                      <RegisterPage />
-                    </motion.div>
-                  }
-                />
-                <Route path="*" element={<Navigate to="/login" />} />
-              </>
-            )}
+            <Route
+              path="/"
+              element={
+                isLoggedIn ? (
+                  <motion.div
+                    initial={{ opacity: 0, x: -100 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: 100 }}
+                    transition={{ duration: 0.5 }}
+                  >
+                    <HomePage />
+                  </motion.div>
+                ) : (
+                  <Navigate to="/login" />
+                )
+              }
+            />
+            <Route
+              path="/predict"
+              element={
+                isLoggedIn ? (
+                  <motion.div
+                    initial={{ opacity: 0, x: -100 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: 100 }}
+                    transition={{ duration: 0.5 }}
+                  >
+                    <PredictionForm />
+                  </motion.div>
+                ) : (
+                  <Navigate to="/login" />
+                )
+              }
+            />
+            <Route
+              path="/visualize"
+              element={
+                isLoggedIn ? (
+                  <motion.div
+                    initial={{ opacity: 0, x: -100 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: 100 }}
+                    transition={{ duration: 0.5 }}
+                  >
+                    <VisualizationPage />
+                  </motion.div>
+                ) : (
+                  <Navigate to="/login" />
+                )
+              }
+            />
+            <Route
+              path="/login"
+              element={
+                !isLoggedIn ? (
+                  <motion.div
+                    initial={{ opacity: 0, x: -100 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: 100 }}
+                    transition={{ duration: 0.5 }}
+                  >
+                    <LoginPage setIsLoggedIn={setIsLoggedIn} />
+                  </motion.div>
+                ) : (
+                  <Navigate to="/predict" />
+                )
+              }
+            />
+            <Route
+              path="/register"
+              element={
+                !isLoggedIn ? (
+                  <motion.div
+                    initial={{ opacity: 0, x: -100 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: 100 }}
+                    transition={{ duration: 0.5 }}
+                  >
+                    <RegisterPage />
+                  </motion.div>
+                ) : (
+                  <Navigate to="/predict" />
+                )
+              }
+            />
           </Routes>
         </AnimatePresence>
         <Footer />
