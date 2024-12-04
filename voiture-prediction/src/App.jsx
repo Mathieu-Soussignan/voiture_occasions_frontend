@@ -50,6 +50,31 @@ function App() {
     },
   });
 
+  // Configuration des animations fun
+  const pageVariants = {
+    initial: {
+      opacity: 0,
+      scale: 0.8,
+      x: -100,
+    },
+    in: {
+      opacity: 1,
+      scale: 1,
+      x: 0,
+    },
+    out: {
+      opacity: 0,
+      scale: 0.8,
+      x: 100,
+    },
+  };
+
+  const pageTransition = {
+    type: 'spring',
+    stiffness: 50,
+    damping: 20,
+  };
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -71,10 +96,11 @@ function App() {
                   path="/"
                   element={
                     <motion.div
-                      initial={{ opacity: 0, x: -100 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      exit={{ opacity: 0, x: 100 }}
-                      transition={{ duration: 0.5 }}
+                      initial="initial"
+                      animate="in"
+                      exit="out"
+                      variants={pageVariants}
+                      transition={pageTransition}
                     >
                       <HomePage />
                     </motion.div>
@@ -84,10 +110,11 @@ function App() {
                   path="/predict"
                   element={
                     <motion.div
-                      initial={{ opacity: 0, x: -100 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      exit={{ opacity: 0, x: 100 }}
-                      transition={{ duration: 0.5 }}
+                      initial="initial"
+                      animate="in"
+                      exit="out"
+                      variants={pageVariants}
+                      transition={pageTransition}
                     >
                       <PredictionForm />
                     </motion.div>
@@ -97,10 +124,11 @@ function App() {
                   path="/visualize"
                   element={
                     <motion.div
-                      initial={{ opacity: 0, x: -100 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      exit={{ opacity: 0, x: 100 }}
-                      transition={{ duration: 0.5 }}
+                      initial="initial"
+                      animate="in"
+                      exit="out"
+                      variants={pageVariants}
+                      transition={pageTransition}
                     >
                       <VisualizationPage />
                     </motion.div>
@@ -114,10 +142,11 @@ function App() {
                   path="/login"
                   element={
                     <motion.div
-                      initial={{ opacity: 0, x: -100 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      exit={{ opacity: 0, x: 100 }}
-                      transition={{ duration: 0.5 }}
+                      initial="initial"
+                      animate="in"
+                      exit="out"
+                      variants={pageVariants}
+                      transition={pageTransition}
                     >
                       <LoginPage />
                     </motion.div>
@@ -127,10 +156,11 @@ function App() {
                   path="/register"
                   element={
                     <motion.div
-                      initial={{ opacity: 0, x: -100 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      exit={{ opacity: 0, x: 100 }}
-                      transition={{ duration: 0.5 }}
+                      initial="initial"
+                      animate="in"
+                      exit="out"
+                      variants={pageVariants}
+                      transition={pageTransition}
                     >
                       <RegisterPage />
                     </motion.div>
