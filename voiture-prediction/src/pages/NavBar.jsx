@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
-import { AppBar, Toolbar, Typography, Switch, Box, IconButton } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { AppBar, Toolbar, Typography, Switch, Box, IconButton, Button } from '@mui/material';
+import { Link, useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 import logo from '../assets/logo.png';
 import HomeIcon from '@mui/icons-material/Home';
 import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
@@ -8,6 +9,21 @@ import BarChartIcon from '@mui/icons-material/BarChart';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 
 export default function NavBar({ darkMode, setDarkMode }) {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const navigate = useNavigate();
+
+  // Vérifier si l'utilisateur est connecté
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    setIsLoggedIn(!!token);
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    setIsLoggedIn(false);
+    navigate('/login');
+  };
+
   return (
     <AppBar position="static">
       <Toolbar>
@@ -43,6 +59,19 @@ export default function NavBar({ darkMode, setDarkMode }) {
           onChange={() => setDarkMode(!darkMode)}
           color="default"
         />
+
+        {/* Bouton Connexion/Déconnexion */}
+        {isLoggedIn ? (
+          <Button color="inherit" onClick={handleLogout}>
+            Déconnexion
+          </Button>
+        ) : (
+          <Link to="/login" style={{ color: 'inherit', textDecoration: 'none' }}>
+            <Button color="inherit">
+              Connexion / Inscription
+            </Button>
+          </Link>
+        )}
       </Toolbar>
 
       {/* Bouton flottant pour "Retour en haut de la page" */}

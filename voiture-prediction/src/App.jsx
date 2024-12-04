@@ -1,7 +1,6 @@
 import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useState } from 'react';
-import HomePage from './pages/HomePage';
 import NavBar from './pages/NavBar';
 import PredictionForm from './PredictionForm';
 import VisualizationPage from "./pages/VisualizationPage";
@@ -61,6 +60,32 @@ function App() {
         <AnimatePresence mode="wait">
           <Routes location={location} key={location.pathname}>
             <Route
+              path="/login"
+              element={
+                <motion.div
+                  initial={{ opacity: 0, x: -100 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: 100 }}
+                  transition={{ duration: 0.5 }}
+                >
+                  <LoginPage />
+                </motion.div>
+              }
+            />
+            <Route
+              path="/register"
+              element={
+                <motion.div
+                  initial={{ opacity: 0, x: -100 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: 100 }}
+                  transition={{ duration: 0.5 }}
+                >
+                  <RegisterPage />
+                </motion.div>
+              }
+            />
+            <Route
               path="/"
               element={
                 <motion.div
@@ -69,7 +94,7 @@ function App() {
                   exit={{ opacity: 0, x: 100 }}
                   transition={{ duration: 0.5 }}
                 >
-                  <HomePage />
+                  <LoginPage />
                 </motion.div>
               }
             />
@@ -96,32 +121,6 @@ function App() {
                   transition={{ duration: 0.5 }}
                 >
                   <VisualizationPage />
-                </motion.div>
-              }
-            />
-            <Route
-              path="/register"
-              element={
-                <motion.div
-                  initial={{ opacity: 0, x: -100 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: 100 }}
-                  transition={{ duration: 0.5 }}
-                >
-                  <RegisterPage />
-                </motion.div>
-              }
-            />
-            <Route
-              path="/login"
-              element={
-                <motion.div
-                  initial={{ opacity: 0, x: -100 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: 100 }}
-                  transition={{ duration: 0.5 }}
-                >
-                  <LoginPage />
                 </motion.div>
               }
             />
