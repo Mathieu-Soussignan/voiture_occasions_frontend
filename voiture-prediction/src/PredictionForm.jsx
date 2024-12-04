@@ -1,3 +1,4 @@
+// PredictionForm.jsx
 import { useState } from 'react';
 import axios from 'axios';
 import {
@@ -51,7 +52,6 @@ function PredictionForm() {
     e.preventDefault();
     setLoading(true);
     try {
-      // Simuler une attente de 3 secondes pour l'utilisateur
       setTimeout(async () => {
         const response = await axios.post(
           `${import.meta.env.VITE_API_BASE_URL}/predict_combined`,
@@ -67,13 +67,12 @@ function PredictionForm() {
   };
 
   return (
-    <Container maxWidth="sm" sx={{ marginTop: '50px' }}>
-      <Typography variant="h4" gutterBottom>
+    <Container maxWidth="md">
+      <Typography variant="h4" gutterBottom align="center">
         Prédiction des Voitures d&apos;Occasion
       </Typography>
+
       <Box component="form" onSubmit={handleSubmit} sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-        
-        {/* Section Kilométrage et Année */}
         <Typography variant="h6">Caractéristiques du Véhicule</Typography>
         <FormControl fullWidth>
           <Typography gutterBottom>Kilométrage (en km)</Typography>
@@ -169,9 +168,14 @@ function PredictionForm() {
         </Box>
       )}
 
-      {/* Utilisation des cartes pour afficher le résultat */}
       {prediction && (
-        <Card sx={{ maxWidth: 500, margin: '20px auto', backgroundColor: prediction.deal_classification === 'Bonne affaire' ? '#c8e6c9' : '#ffcdd2' }}>
+        <Card
+          sx={{
+            maxWidth: 500,
+            margin: '20px auto',
+            backgroundColor: prediction.deal_classification === 'Bonne affaire' ? '#c8e6c9' : '#ffcdd2'
+          }}
+        >
           <CardContent>
             <Typography variant="h6" gutterBottom>
               Résultat de la Prédiction

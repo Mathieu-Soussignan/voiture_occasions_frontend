@@ -7,11 +7,12 @@ import PredictionForm from './PredictionForm';
 import VisualizationPage from "./pages/VisualizationPage";
 import Footer from './components/Footer';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import { CssBaseline, Box } from '@mui/material';
+import { CssBaseline, Box, useMediaQuery } from '@mui/material';
 
 function App() {
   const location = useLocation();
   const [darkMode, setDarkMode] = useState(false);
+  const isMobile = useMediaQuery('(max-width:600px)');
 
   const theme = createTheme({
     palette: {
@@ -22,6 +23,23 @@ function App() {
     },
     typography: {
       fontFamily: "'Poppins', sans-serif",
+    },
+    components: {
+      MuiButton: {
+        styleOverrides: {
+          root: {
+            fontSize: isMobile ? '0.875rem' : '1rem',
+            padding: isMobile ? '6px 16px' : '8px 22px',
+          },
+        },
+      },
+      MuiTextField: {
+        styleOverrides: {
+          root: {
+            margin: isMobile ? '8px 0' : '16px 0',
+          },
+        },
+      },
     },
   });
 
