@@ -1,5 +1,5 @@
 // src/App.jsx
-import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, useLocation, Navigate } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
 import HomePage from './pages/HomePage';
@@ -113,6 +113,10 @@ function App() {
               <>
                 <Route
                   path="/"
+                  element={<Navigate to="/login" />}
+                />
+                <Route
+                  path="/login"
                   element={
                     <motion.div
                       initial={{ opacity: 0, x: -100 }}
