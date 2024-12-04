@@ -1,4 +1,3 @@
-// PredictionForm.jsx
 import { useState } from 'react';
 import axios from 'axios';
 import {
@@ -21,14 +20,15 @@ function PredictionForm() {
   const [formData, setFormData] = useState({
     kilometrage: 15000,
     annee: 2020,
-    marque: 'Peugeot',
+    marque: '',
     carburant: 'Essence',
     transmission: 'Manuelle',
-    modele: '208',
+    modele: '',
     etat: 'Occasion',
   });
   const [prediction, setPrediction] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [modelesDisponibles, setModelesDisponibles] = useState([]);
 
   const marquesDisponibles = [
     'Audi', 'BMW', 'Citroën', 'Dacia', 'Fiat', 'Ford', 'Honda', 'Hyundai', 'Jeep',
@@ -37,11 +37,51 @@ function PredictionForm() {
     'Toyota', 'Volkswagen', 'Volvo'
   ];
 
+  const modelesParMarque = {
+    Audi: ['A3', 'A4', 'Q3', 'Q5'],
+    BMW: ['Serie 1', 'Serie 3', 'X1', 'X5'],
+    Citroën: ['C1', 'C3', 'C4', 'C5 Aircross'],
+    Dacia: ['Duster', 'Sandero', 'Logan'],
+    Fiat: ['500', 'Panda', 'Tipo'],
+    Ford: ['Fiesta', 'Focus', 'Kuga', 'Puma'],
+    Honda: ['Civic', 'CR-V', 'Jazz'],
+    Hyundai: ['i20', 'i30', 'Tucson'],
+    Jeep: ['Renegade', 'Compass', 'Cherokee'],
+    Kia: ['Picanto', 'Ceed', 'Sportage'],
+    Lexus: ['CT', 'NX', 'RX'],
+    Mazda: ['Mazda2', 'Mazda3', 'CX-5'],
+    'Mercedes-Benz': ['A-Class', 'C-Class', 'GLC'],
+    Mini: ['Cooper', 'Countryman'],
+    Mitsubishi: ['ASX', 'Outlander', 'Eclipse Cross'],
+    Nissan: ['Micra', 'Qashqai', 'Juke'],
+    Opel: ['Corsa', 'Astra', 'Mokka'],
+    Peugeot: ['208', '308', '3008', '5008'],
+    Renault: ['Clio', 'Megane', 'Captur', 'Kadjar'],
+    Seat: ['Ibiza', 'Leon', 'Arona'],
+    Skoda: ['Fabia', 'Octavia', 'Kodiaq'],
+    Smart: ['ForTwo', 'ForFour'],
+    Subaru: ['Impreza', 'XV', 'Outback'],
+    Suzuki: ['Swift', 'Vitara', 'S-Cross'],
+    Tesla: ['Model 3', 'Model S', 'Model X'],
+    Toyota: ['Yaris', 'Corolla', 'RAV4'],
+    Volkswagen: ['Polo', 'Golf', 'Tiguan'],
+    Volvo: ['XC40', 'XC60', 'S60']
+  };
+
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+    const { name, value } = e.target;
+    setFormData(prevData => ({
+      ...prevData,
+      [name]: value,
+    }));
+
+    if (name === 'marque') {
+      setModelesDisponibles(modelesParMarque[value] || []);
+      setFormData(prevData => ({
+        ...prevData,
+        modele: '',
+      }));
+    }
   };
 
   const handleSliderChange = (field) => (event, value) => {
@@ -99,12 +139,13 @@ function PredictionForm() {
           />
         </FormControl>
 
-        <FormControl fullWidth>
+        <FormControl fullWidth variant="outlined">
           <InputLabel>Marque</InputLabel>
           <Select
             name="marque"
             value={formData.marque}
             onChange={handleChange}
+            label="Marque"
           >
             {marquesDisponibles.map((marque) => (
               <MenuItem key={marque} value={marque}>
@@ -114,31 +155,42 @@ function PredictionForm() {
           </Select>
         </FormControl>
 
-        <TextField
-          label="Modèle"
-          variant="outlined"
-          name="modele"
-          type="text"
-          value={formData.modele}
-          onChange={handleChange}
-        />
-        <FormControl fullWidth>
+        <FormControl fullWidth variant="outlined">
+          <InputLabel>Modèle</InputLabel>
+          <Select
+            name="modele"
+            value={formData.modele}
+            onChange={handleChange}
+            disabled={!formData.marque}
+            label="Modèle"
+          >
+            {modelesDisponibles.map((modele) => (
+              <MenuItem key={modele} value={modele}>
+                {modele}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+
+        <FormControl fullWidth variant="outlined">
           <InputLabel>Transmission</InputLabel>
           <Select
             name="transmission"
             value={formData.transmission}
             onChange={handleChange}
+            label="Transmission"
           >
             <MenuItem value="Manuelle">Manuelle</MenuItem>
             <MenuItem value="Automatique">Automatique</MenuItem>
           </Select>
         </FormControl>
-        <FormControl fullWidth>
+        <FormControl fullWidth variant="outlined">
           <InputLabel>Type de Carburant</InputLabel>
           <Select
             name="carburant"
             value={formData.carburant}
             onChange={handleChange}
+            label="Type de Carburant"
           >
             <MenuItem value="Essence">Essence</MenuItem>
             <MenuItem value="Diesel">Diesel</MenuItem>
@@ -169,13 +221,7 @@ function PredictionForm() {
       )}
 
       {prediction && (
-        <Card
-          sx={{
-            maxWidth: 500,
-            margin: '20px auto',
-            backgroundColor: prediction.deal_classification === 'Bonne affaire' ? '#c8e6c9' : '#ffcdd2'
-          }}
-        >
+        <Card sx={{ maxWidth: 500, margin: '20px auto', backgroundColor: prediction.deal_classification === 'Bonne affaire' ? '#c8e6c9' : '#ffcdd2' }}>
           <CardContent>
             <Typography variant="h6" gutterBottom>
               Résultat de la Prédiction
