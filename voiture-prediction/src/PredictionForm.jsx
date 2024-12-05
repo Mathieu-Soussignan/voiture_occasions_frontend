@@ -13,7 +13,7 @@ import {
   Slider,
   LinearProgress,
   Card,
-  CardContent
+  CardContent,
 } from '@mui/material';
 import PropTypes from 'prop-types';
 
@@ -51,7 +51,7 @@ function PredictionForm({ darkMode }) {
     Kia: ['Picanto', 'Ceed', 'Sportage'],
     Lexus: ['CT', 'NX', 'RX'],
     Mazda: ['Mazda2', 'Mazda3', 'CX-5'],
-    'Mercedes-Benz': ['A-Class', 'C-Class', 'GLC'],
+    Mercedes: ['A-Class', 'C-Class', 'GLC'],
     Mini: ['Cooper', 'Countryman'],
     Mitsubishi: ['ASX', 'Outlander', 'Eclipse Cross'],
     Nissan: ['Micra', 'Qashqai', 'Juke'],
@@ -227,8 +227,12 @@ function PredictionForm({ darkMode }) {
             maxWidth: 500,
             margin: '20px auto',
             backgroundColor: darkMode
-              ? (prediction.deal_classification === 'Bonne affaire' ? '#4caf50' : '#ef5350')
-              : (prediction.deal_classification === 'Bonne affaire' ? '#c8e6c9' : '#ffcdd2'),
+              ? prediction.deal_classification === 'Bonne affaire'
+                ? '#388e3c'  // Vert foncé pour le dark mode
+                : '#d32f2f'  // Rouge foncé pour le dark mode
+              : prediction.deal_classification === 'Bonne affaire'
+              ? '#c8e6c9'   // Vert clair pour le light mode
+              : '#ffcdd2'   // Rouge clair pour le light mode
           }}
         >
           <CardContent>
