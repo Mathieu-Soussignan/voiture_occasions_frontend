@@ -1,11 +1,13 @@
 import PropTypes from 'prop-types';
-import { AppBar, Toolbar, Typography, Switch, Box, IconButton, Button, CircularProgress } from '@mui/material';
+import { AppBar, Toolbar, Typography, Box, IconButton, Button, CircularProgress } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 import logo from '../assets/logo.png';
 import HomeIcon from '@mui/icons-material/Home';
 import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
+import LightModeIcon from '@mui/icons-material/LightMode';
+import DarkModeIcon from '@mui/icons-material/DarkMode';
 import { useState } from 'react';
 import { useAuth } from '../hooks/useAuth';
 
@@ -63,11 +65,9 @@ export default function NavBar({ darkMode, setDarkMode }) {
           </Box>
 
           {/* Toggle Dark/Light Mode */}
-          <Switch
-            checked={darkMode}
-            onChange={handleToggleTheme}
-            color="default"
-          />
+          <IconButton color="inherit" onClick={handleToggleTheme} sx={{ mr: 2 }}>
+            {darkMode ? <LightModeIcon /> : <DarkModeIcon />}
+          </IconButton>
 
           {/* Bouton Connexion/Déconnexion */}
           {isLoggedIn ? (
