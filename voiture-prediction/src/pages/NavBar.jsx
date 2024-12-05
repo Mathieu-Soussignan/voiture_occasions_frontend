@@ -6,8 +6,6 @@ import HomeIcon from '@mui/icons-material/Home';
 import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
-import LightModeIcon from '@mui/icons-material/LightMode';
-import DarkModeIcon from '@mui/icons-material/DarkMode';
 import { useState } from 'react';
 import { useAuth } from '../hooks/useAuth';
 
@@ -43,31 +41,35 @@ export default function NavBar({ darkMode, setDarkMode }) {
             <img src={logo} alt="Prédict Car Logo" style={{ height: '50px', marginRight: '60px' }} />
           </Link>
 
-          <Box sx={{ display: 'flex', gap: 2, flexGrow: 1 }}>
-            <Link to="/" style={{ color: 'inherit', textDecoration: 'none', display: 'flex', alignItems: 'center' }}>
-              <IconButton color="inherit" sx={{ mr: 1 }}>
-                <HomeIcon />
-              </IconButton>
-              <Typography variant="h6">Accueil</Typography>
-            </Link>
-            <Link to="/predict" style={{ color: 'inherit', textDecoration: 'none', display: 'flex', alignItems: 'center' }}>
-              <IconButton color="inherit" sx={{ mr: 1 }}>
-                <DirectionsCarIcon />
-              </IconButton>
-              <Typography variant="h6">Prédiction</Typography>
-            </Link>
-            <Link to="/visualize" style={{ color: 'inherit', textDecoration: 'none', display: 'flex', alignItems: 'center' }}>
-              <IconButton color="inherit" sx={{ mr: 1 }}>
-                <BarChartIcon />
-              </IconButton>
-              <Typography variant="h6">Visualisation</Typography>
-            </Link>
-          </Box>
+          {isLoggedIn && (
+            <Box sx={{ display: 'flex', gap: 2, flexGrow: 1 }}>
+              <Link to="/" style={{ color: 'inherit', textDecoration: 'none', display: 'flex', alignItems: 'center' }}>
+                <IconButton color="inherit" sx={{ mr: 1 }}>
+                  <HomeIcon />
+                </IconButton>
+                <Typography variant="h6">Accueil</Typography>
+              </Link>
+              <Link to="/predict" style={{ color: 'inherit', textDecoration: 'none', display: 'flex', alignItems: 'center' }}>
+                <IconButton color="inherit" sx={{ mr: 1 }}>
+                  <DirectionsCarIcon />
+                </IconButton>
+                <Typography variant="h6">Prédiction</Typography>
+              </Link>
+              <Link to="/visualize" style={{ color: 'inherit', textDecoration: 'none', display: 'flex', alignItems: 'center' }}>
+                <IconButton color="inherit" sx={{ mr: 1 }}>
+                  <BarChartIcon />
+                </IconButton>
+                <Typography variant="h6">Visualisation</Typography>
+              </Link>
+            </Box>
+          )}
 
           {/* Toggle Dark/Light Mode */}
-          <IconButton color="inherit" onClick={handleToggleTheme} sx={{ mr: 2 }}>
-            {darkMode ? <LightModeIcon /> : <DarkModeIcon />}
-          </IconButton>
+          {isLoggedIn && (
+            <IconButton color="inherit" onClick={handleToggleTheme}>
+              {darkMode ? '🌙' : '☀️'}
+            </IconButton>
+          )}
 
           {/* Bouton Connexion/Déconnexion */}
           {isLoggedIn ? (
