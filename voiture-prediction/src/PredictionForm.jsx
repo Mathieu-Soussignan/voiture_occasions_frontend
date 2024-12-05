@@ -15,8 +15,9 @@ import {
   Card,
   CardContent
 } from '@mui/material';
+import PropTypes from 'prop-types';
 
-function PredictionForm() {
+function PredictionForm({ darkMode }) {
   const [formData, setFormData] = useState({
     kilometrage: 15000,
     annee: 2020,
@@ -221,7 +222,15 @@ function PredictionForm() {
       )}
 
       {prediction && (
-        <Card sx={{ maxWidth: 500, margin: '20px auto', backgroundColor: prediction.deal_classification === 'Bonne affaire' ? '#c8e6c9' : '#ffcdd2' }}>
+        <Card
+          sx={{
+            maxWidth: 500,
+            margin: '20px auto',
+            backgroundColor: darkMode
+              ? (prediction.deal_classification === 'Bonne affaire' ? '#4caf50' : '#ef5350')
+              : (prediction.deal_classification === 'Bonne affaire' ? '#c8e6c9' : '#ffcdd2'),
+          }}
+        >
           <CardContent>
             <Typography variant="h6" gutterBottom>
               Résultat de la Prédiction
@@ -238,5 +247,9 @@ function PredictionForm() {
     </Container>
   );
 }
+
+PredictionForm.propTypes = {
+  darkMode: PropTypes.bool.isRequired
+};
 
 export default PredictionForm;
