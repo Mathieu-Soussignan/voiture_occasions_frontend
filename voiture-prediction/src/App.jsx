@@ -71,8 +71,8 @@ function App() {
 
   const pageTransition = {
     type: 'spring',
-    stiffness: 50,
-    damping: 20,
+    stiffness: 150,
+    damping: 25,
   };
 
   return (
