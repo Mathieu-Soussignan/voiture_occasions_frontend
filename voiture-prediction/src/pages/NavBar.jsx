@@ -88,7 +88,7 @@ export default function NavBar({ darkMode, setDarkMode }) {
             <>
               <IconButton color="inherit" onClick={handleMenu}>
                 <AccountCircleIcon />
-                <Typography sx={{ ml: 1 }}>{user?.name || 'Utilisateur'}</Typography>
+                <Typography sx={{ ml: 1 }}>{user?.name || 'Bienvenue'}</Typography>
               </IconButton>
               <Menu
                 anchorEl={anchorEl}
@@ -96,7 +96,7 @@ export default function NavBar({ darkMode, setDarkMode }) {
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
               >
-                <MenuItem onClick={handleClose}>Profil</MenuItem>
+                {/* <MenuItem onClick={handleClose}>Profil</MenuItem> */}
                 <MenuItem onClick={handleLogout}>Déconnexion</MenuItem>
               </Menu>
             </>
