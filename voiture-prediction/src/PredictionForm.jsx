@@ -33,7 +33,7 @@ function PredictionForm({ darkMode }) {
 
   const marquesDisponibles = [
     'Audi', 'BMW', 'Citroën', 'Dacia', 'Fiat', 'Ford', 'Honda', 'Hyundai', 'Jeep',
-    'Kia', 'Lexus', 'Mazda', 'Mercedes-Benz', 'Mini', 'Mitsubishi', 'Nissan', 'Opel',
+    'Kia', 'Lexus', 'Mazda', 'Mercedes', 'Mini', 'Mitsubishi', 'Nissan', 'Opel',
     'Peugeot', 'Renault', 'Seat', 'Skoda', 'Smart', 'Subaru', 'Suzuki', 'Tesla',
     'Toyota', 'Volkswagen', 'Volvo'
   ];
