@@ -1,28 +1,28 @@
 import PropTypes from 'prop-types';
-import { AppBar, Toolbar, Typography, Box, IconButton, Button, CircularProgress, Menu, MenuItem, Avatar } from '@mui/material';
+import { AppBar, Toolbar, Typography, Box, IconButton, Menu, MenuItem, CircularProgress } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 import logo from '../assets/logo.png';
 import HomeIcon from '@mui/icons-material/Home';
 import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
-import Brightness7Icon from '@mui/icons-material/Brightness7';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
+import Brightness7Icon from '@mui/icons-material/Brightness7';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { useState } from 'react';
 import { useAuth } from '../hooks/useAuth';
 
-export default function NavBar({ darkMode, setDarkMode, username }) {
-  const { isLoggedIn, setIsLoggedIn } = useAuth();
+export default function NavBar({ darkMode, setDarkMode }) {
+  const { isLoggedIn, setIsLoggedIn, user } = useAuth();
   const navigate = useNavigate();
   const [showLogoutTimer, setShowLogoutTimer] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
 
-  // Fonction pour gérer la déconnexion avec animation
   const handleLogout = () => {
     localStorage.removeItem('token');
     setIsLoggedIn(false);
 
-    // Afficher le timer avant la redirection
+    // Affiche le timer avant la redirection
     setShowLogoutTimer(true);
     setTimeout(() => {
       setShowLogoutTimer(false);
@@ -30,17 +30,11 @@ export default function NavBar({ darkMode, setDarkMode, username }) {
     }, 3000); // 3 secondes de délai
   };
 
-  // Fonction pour gérer le changement de thème
-  const handleToggleTheme = () => {
-    setDarkMode(prevMode => !prevMode);
-  };
-
-  // Fonction pour ouvrir et fermer le menu
-  const handleMenuOpen = (event) => {
+  const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleMenuClose = () => {
+  const handleClose = () => {
     setAnchorEl(null);
   };
 
@@ -75,36 +69,26 @@ export default function NavBar({ darkMode, setDarkMode, username }) {
           </Box>
 
           {/* Toggle Dark/Light Mode */}
-          <IconButton onClick={handleToggleTheme} color="inherit">
+          <IconButton onClick={() => setDarkMode(!darkMode)} color="inherit">
             {darkMode ? <Brightness7Icon /> : <Brightness4Icon />}
           </IconButton>
 
-          {/* Bouton Connexion/Déconnexion sous forme de menu */}
-          {isLoggedIn ? (
+          {/* Menu Utilisateur */}
+          {isLoggedIn && (
             <>
-              <IconButton
-                onClick={handleMenuOpen}
-                color="inherit"
-              >
-                <Avatar>{username ? username.charAt(0).toUpperCase() : '?'}</Avatar>
-                <Typography variant="body1" sx={{ ml: 1 }}>
-                  {username || 'Utilisateur'}
-                </Typography>
+              <IconButton onClick={handleMenu} color="inherit">
+                <AccountCircleIcon />
+                <Typography sx={{ ml: 1 }}>{user?.username || 'Utilisateur'}</Typography>
               </IconButton>
               <Menu
                 anchorEl={anchorEl}
+                keepMounted
                 open={Boolean(anchorEl)}
-                onClose={handleMenuClose}
+                onClose={handleClose}
               >
                 <MenuItem onClick={handleLogout}>Déconnexion</MenuItem>
               </Menu>
             </>
-          ) : (
-            <Link to="/login" style={{ color: 'inherit', textDecoration: 'none' }}>
-              <Button color="inherit">
-                Connexion / Inscription
-              </Button>
-            </Link>
           )}
         </Toolbar>
 
@@ -155,5 +139,4 @@ export default function NavBar({ darkMode, setDarkMode, username }) {
 NavBar.propTypes = {
   darkMode: PropTypes.bool.isRequired,
   setDarkMode: PropTypes.func.isRequired,
-  username: PropTypes.string,
 };
