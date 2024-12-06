@@ -1,18 +1,20 @@
 import PropTypes from 'prop-types';
-import { AppBar, Toolbar, Typography, Box, IconButton, Button, CircularProgress } from '@mui/material';
+import { AppBar, Toolbar, Typography, Box, IconButton, Button, CircularProgress, Menu, MenuItem } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 import logo from '../assets/logo.png';
 import HomeIcon from '@mui/icons-material/Home';
 import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { useState } from 'react';
 import { useAuth } from '../hooks/useAuth';
 
 export default function NavBar({ darkMode, setDarkMode }) {
-  const { isLoggedIn, setIsLoggedIn } = useAuth();
+  const { isLoggedIn, setIsLoggedIn, user } = useAuth();
   const navigate = useNavigate();
   const [showLogoutTimer, setShowLogoutTimer] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
 
   // Fonction pour gérer la déconnexion avec animation
   const handleLogout = () => {
@@ -30,6 +32,16 @@ export default function NavBar({ darkMode, setDarkMode }) {
   // Fonction pour gérer le changement de thème
   const handleToggleTheme = () => {
     setDarkMode(prevMode => !prevMode);
+  };
+
+  // Fonction pour ouvrir le menu utilisateur
+  const handleMenu = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  // Fonction pour fermer le menu utilisateur
+  const handleClose = () => {
+    setAnchorEl(null);
   };
 
   return (
@@ -71,12 +83,26 @@ export default function NavBar({ darkMode, setDarkMode }) {
             </IconButton>
           )}
 
-          {/* Bouton Connexion/Déconnexion */}
-          {isLoggedIn ? (
-            <Button color="inherit" onClick={handleLogout}>
-              Déconnexion
-            </Button>
-          ) : (
+          {/* Menu Utilisateur */}
+          {isLoggedIn && (
+            <>
+              <IconButton color="inherit" onClick={handleMenu}>
+                <AccountCircleIcon />
+                <Typography sx={{ ml: 1 }}>{user?.username || 'Utilisateur'}</Typography>
+              </IconButton>
+              <Menu
+                anchorEl={anchorEl}
+                keepMounted
+                open={Boolean(anchorEl)}
+                onClose={handleClose}
+              >
+                <MenuItem onClick={handleLogout}>Déconnexion</MenuItem>
+              </Menu>
+            </>
+          )}
+
+          {/* Bouton Connexion/Inscription */}
+          {!isLoggedIn && (
             <Link to="/login" style={{ color: 'inherit', textDecoration: 'none' }}>
               <Button color="inherit">
                 Connexion / Inscription
