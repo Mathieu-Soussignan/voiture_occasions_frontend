@@ -223,32 +223,30 @@ function PredictionForm({ darkMode }) {
 
       {prediction && (
         <>
-        {console.log(prediction, darkMode)}
-        <Card
-          sx={{
-            maxWidth: 500,
-            margin: '20px auto',
-            backgroundColor: darkMode
-              ? prediction.deal_classification === 'Bonne affaire'
-                ? '#388e3c'  // Vert foncé pour le dark mode
-                : '#d32f2f'  // Rouge foncé pour le dark mode
-              : prediction.deal_classification === 'Bonne affaire'
-              ? '#c8e6c9'   // Vert clair pour le light mode
-              : '#ffcdd2'   // Rouge clair pour le light mode
-          }}
-        >
-          <CardContent>
-            <Typography variant="h6" gutterBottom>
-              Résultat de la Prédiction
-            </Typography>
-            <Typography variant="body1">
-              Prix Estimé : {prediction.predicted_price} €
-            </Typography>
-            <Typography variant="body1">
-              Classification de l&apos;offre : {prediction.deal_classification}
-            </Typography>
-          </CardContent>
-        </Card>
+          {console.log(prediction, darkMode)}
+          <Card
+            sx={{
+              maxWidth: 500,
+              margin: '20px auto',
+              backgroundColor: `${
+                darkMode
+                  ? (prediction.deal_classification === 'Bonne affaire' ? '#2e7d32' : '#c62828')
+                  : (prediction.deal_classification === 'Bonne affaire' ? '#a5d6a7' : '#ef9a9a')
+              } !important`
+            }}
+          >
+            <CardContent>
+              <Typography variant="h6" gutterBottom>
+                Résultat de la Prédiction
+              </Typography>
+              <Typography variant="body1">
+                Prix Estimé : {prediction.predicted_price} €
+              </Typography>
+              <Typography variant="body1">
+                Classification de l&apos;offre : {prediction.deal_classification}
+              </Typography>
+            </CardContent>
+          </Card>
         </>
       )}
     </Container>
