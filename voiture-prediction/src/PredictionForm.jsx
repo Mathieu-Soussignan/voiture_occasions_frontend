@@ -222,6 +222,8 @@ function PredictionForm({ darkMode }) {
       )}
 
       {prediction && (
+        <>
+        {console.log(prediction, darkMode)}
         <Card
           sx={{
             maxWidth: 500,
@@ -247,6 +249,7 @@ function PredictionForm({ darkMode }) {
             </Typography>
           </CardContent>
         </Card>
+        </>
       )}
     </Container>
   );
