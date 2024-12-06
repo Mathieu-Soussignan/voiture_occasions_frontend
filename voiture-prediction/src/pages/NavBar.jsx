@@ -1,20 +1,18 @@
 import PropTypes from 'prop-types';
-import { AppBar, Toolbar, Typography, Box, IconButton, CircularProgress, Menu, MenuItem } from '@mui/material';
+import { AppBar, Toolbar, Typography, Box, IconButton, Button, CircularProgress } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 import logo from '../assets/logo.png';
 import HomeIcon from '@mui/icons-material/Home';
 import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { useState } from 'react';
 import { useAuth } from '../hooks/useAuth';
 
 export default function NavBar({ darkMode, setDarkMode }) {
-  const { isLoggedIn, setIsLoggedIn, user } = useAuth();
+  const { isLoggedIn, setIsLoggedIn } = useAuth();
   const navigate = useNavigate();
   const [showLogoutTimer, setShowLogoutTimer] = useState(false);
-  const [anchorEl, setAnchorEl] = useState(null);
 
   // Fonction pour gérer la déconnexion avec animation
   const handleLogout = () => {
@@ -34,26 +32,16 @@ export default function NavBar({ darkMode, setDarkMode }) {
     setDarkMode(prevMode => !prevMode);
   };
 
-  // Fonction pour ouvrir le menu dropdown
-  const handleMenu = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  // Fonction pour fermer le menu dropdown
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
   return (
     <>
-      {isLoggedIn && (
-        <AppBar position="static">
-          <Toolbar>
-            {/* Logo avec navigation vers l'accueil */}
-            <Link to="/" style={{ display: 'flex', alignItems: 'center' }}>
-              <img src={logo} alt="Prédict Car Logo" style={{ height: '50px', marginRight: '60px' }} />
-            </Link>
+      <AppBar position="static">
+        <Toolbar>
+          {/* Logo avec navigation vers l'accueil */}
+          <Link to="/" style={{ display: 'flex', alignItems: 'center' }}>
+            <img src={logo} alt="Prédict Car Logo" style={{ height: '50px', marginRight: '60px' }} />
+          </Link>
 
+          {isLoggedIn && (
             <Box sx={{ display: 'flex', gap: 2, flexGrow: 1 }}>
               <Link to="/" style={{ color: 'inherit', textDecoration: 'none', display: 'flex', alignItems: 'center' }}>
                 <IconButton color="inherit" sx={{ mr: 1 }}>
@@ -74,49 +62,44 @@ export default function NavBar({ darkMode, setDarkMode }) {
                 <Typography variant="h6">Visualisation</Typography>
               </Link>
             </Box>
+          )}
 
-            {/* Toggle Dark/Light Mode */}
-            <IconButton color="inherit" onClick={handleToggleTheme} sx={{ mr: 2 }}>
-              {darkMode ? <AccountCircleIcon /> : <AccountCircleIcon />}
+          {/* Toggle Dark/Light Mode */}
+          {isLoggedIn && (
+            <IconButton color="inherit" onClick={handleToggleTheme}>
+              {darkMode ? '🌙' : '☀️'}
             </IconButton>
+          )}
 
-            {/* Menu Dropdown pour l'utilisateur connecté */}
-            <div>
-              <IconButton
-                color="inherit"
-                onClick={handleMenu}
-              >
-                <AccountCircleIcon />
-                <Typography variant="h6" sx={{ ml: 1 }}>
-                  {user?.name || 'Utilisateur'}
-                </Typography>
-              </IconButton>
-              <Menu
-                anchorEl={anchorEl}
-                open={Boolean(anchorEl)}
-                onClose={handleClose}
-              >
-                <MenuItem onClick={handleLogout}>Déconnexion</MenuItem>
-              </Menu>
-            </div>
-          </Toolbar>
+          {/* Bouton Connexion/Déconnexion */}
+          {isLoggedIn ? (
+            <Button color="inherit" onClick={handleLogout}>
+              Déconnexion
+            </Button>
+          ) : (
+            <Link to="/login" style={{ color: 'inherit', textDecoration: 'none' }}>
+              <Button color="inherit">
+                Connexion / Inscription
+              </Button>
+            </Link>
+          )}
+        </Toolbar>
 
-          {/* Bouton flottant pour "Retour en haut de la page" */}
-          <IconButton
-            color="primary"
-            aria-label="Retour en haut"
-            sx={{
-              position: 'fixed',
-              bottom: 16,
-              right: 16,
-              backgroundColor: 'white',
-            }}
-            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-          >
-            <ArrowUpwardIcon />
-          </IconButton>
-        </AppBar>
-      )}
+        {/* Bouton flottant pour "Retour en haut de la page" */}
+        <IconButton
+          color="primary"
+          aria-label="Retour en haut"
+          sx={{
+            position: 'fixed',
+            bottom: 16,
+            right: 16,
+            backgroundColor: 'white',
+          }}
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+        >
+          <ArrowUpwardIcon />
+        </IconButton>
+      </AppBar>
 
       {/* Animation de déconnexion */}
       {showLogoutTimer && (
