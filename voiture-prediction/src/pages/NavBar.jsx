@@ -31,7 +31,7 @@ export default function NavBar({ darkMode, setDarkMode }) {
 
   // Fonction pour gérer le changement de thème
   const handleToggleTheme = () => {
-    setDarkMode(prevMode => !prevMode);
+    setDarkMode((prevMode) => !prevMode);
   };
 
   // Fonction pour ouvrir le menu utilisateur
@@ -78,7 +78,7 @@ export default function NavBar({ darkMode, setDarkMode }) {
 
           {/* Toggle Dark/Light Mode */}
           {isLoggedIn && (
-            <IconButton color="inherit" onClick={handleToggleTheme}>
+            <IconButton color="inherit" onClick={handleToggleTheme} sx={{ mr: 2 }}>
               {darkMode ? '🌙' : '☀️'}
             </IconButton>
           )}
@@ -88,7 +88,7 @@ export default function NavBar({ darkMode, setDarkMode }) {
             <>
               <IconButton color="inherit" onClick={handleMenu}>
                 <AccountCircleIcon />
-                <Typography sx={{ ml: 1 }}>{user?.username || 'Utilisateur'}</Typography>
+                <Typography sx={{ ml: 1 }}>{user?.name || 'Utilisateur'}</Typography>
               </IconButton>
               <Menu
                 anchorEl={anchorEl}
@@ -96,6 +96,7 @@ export default function NavBar({ darkMode, setDarkMode }) {
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
               >
+                <MenuItem onClick={handleClose}>Profil</MenuItem>
                 <MenuItem onClick={handleLogout}>Déconnexion</MenuItem>
               </Menu>
             </>
