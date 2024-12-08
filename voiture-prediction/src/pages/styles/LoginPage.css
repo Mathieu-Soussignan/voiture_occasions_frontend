@@ -1,0 +1,190 @@
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background: #c6deef; /* Couleur de fond */
+  font-family: 'Poppins', sans-serif;
+}
+
+.login-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh; /* Remplit toute la hauteur */
+  background: #c6deef; /* Fond uniforme */
+  overflow: hidden; /* Empêche les débordements */
+}
+
+.box {
+  position: relative;
+  width: 380px;
+  height: 450px;
+  background: #ffffff; /* Couleur blanche pour le contraste */
+  border-radius: 8px;
+  overflow: hidden;
+  padding: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 2; /* Assurez-vous que le formulaire reste visible */
+}
+
+.box::before,
+.box::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 380px;
+  height: 420px;
+  background: linear-gradient(0deg, transparent, transparent, #0288d1, #0288d1);
+  z-index: 1;
+  transform-origin: bottom right;
+  animation: animate 6s linear infinite;
+}
+
+.box::after {
+  animation-delay: -3s;
+}
+
+.borderLine::before,
+.borderLine::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 380px;
+  height: 420px;
+  background: linear-gradient(0deg, transparent, transparent, #ff4081, #ff4081);
+  z-index: 0; /* En dessous du formulaire */
+  transform-origin: bottom right;
+  animation: animate 6s linear infinite;
+}
+
+.borderLine::after {
+  animation-delay: -1.5s;
+}
+
+@keyframes animate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.box form {
+  position: absolute;
+  inset: 4px;
+  background: #ffffff;
+  padding: 50px 40px;
+  border-radius: 8px;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+}
+
+.box form h2 {
+  color: #0288d1;
+  font-weight: 500;
+  text-align: center;
+  letter-spacing: 0.1em;
+}
+
+.box form .inputBox {
+  position: relative;
+  width: 100%;
+  margin-top: 35px;
+}
+
+.box form .inputBox input {
+  position: relative;
+  width: 100%;
+  padding: 5px 10px; /* Ajustement du padding pour éviter le décalage */
+  background: transparent;
+  outline: none;
+  border: none;
+  border-bottom: 2px solid #0288d1;
+  color: #0288d1;
+  font-size: 1em;
+  letter-spacing: 0.05em;
+  transition: 0.5s;
+  z-index: 2;
+}
+
+.box form .inputBox input:focus {
+  border-bottom: 2px solid #004c8c;
+}
+
+.box form .inputBox span {
+  position: absolute;
+  left: 0;
+  top: -10px; /* Ajustement pour un alignement parfait */
+  pointer-events: none;
+  color: #8f8f8f;
+  font-size: 1em;
+  letter-spacing: 0.05em;
+  transition: 0.5s;
+}
+
+/* Spécifique au champ "Nom d'utilisateur" */
+.box form .inputBox input[name="username"]:focus ~ span,
+.box form .inputBox input[name="username"]:valid ~ span {
+    top: -33px; /* Ajustement spécifique */
+    font-size: 0.8em;
+    color: #0288d1;
+}
+
+/* Règles générales pour les autres champs */
+.box form .inputBox input:focus ~ span,
+.box form .inputBox input:valid ~ span {
+    top: -20px; /* Règle générale pour les autres champs */
+    font-size: 0.8em;
+    color: #0288d1;
+}
+
+.box form .links {
+  display: flex;
+  justify-content: space-between;
+}
+
+.box form .links a {
+  margin: 10px 0;
+  font-size: 0.75em;
+  color: #0288d1;
+  text-decoration: none;
+}
+
+.box form .links a:hover {
+  color: #004c8c;
+}
+
+#submit {
+  border: none;
+  outline: none;
+  padding: 10px 25px;
+  cursor: pointer;
+  font-size: 1em;
+  border-radius: 4px;
+  font-weight: 600;
+  background: #0288d1;
+  color: #fff;
+  width: 100%;
+  margin-top: 20px;
+  transition: background 0.3s;
+}
+
+#submit:hover {
+  background: #004c8c;
+}
+
+footer {
+  text-align: center;
+  background: #0288d1;
+  color: white;
+  padding: 10px 0;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  z-index: 10;
+}

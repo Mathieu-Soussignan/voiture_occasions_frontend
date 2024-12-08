@@ -1,8 +1,8 @@
 // src/pages/RegisterPage.jsx
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { TextField, Button, Container, Typography, Box, Paper } from '@mui/material';
 import axios from 'axios';
+import '../pages/styles/RegisterPage.css'; // Fichier CSS pour les styles personnalisés
 
 function RegisterPage() {
   const [formData, setFormData] = useState({
@@ -65,13 +65,13 @@ function RegisterPage() {
     }
 
     try {
-      console.log('Données envoyées :', formData); // Ajouter un log pour vérifier les données
+      console.log('Données envoyées :', formData);
       await axios.post(
         `${import.meta.env.VITE_API_BASE_URL}/register`,
         formData,
         {
           headers: {
-            'Content-Type': 'application/json', // S'assurer que les en-têtes sont bien définis
+            'Content-Type': 'application/json',
           },
         }
       );
@@ -84,53 +84,51 @@ function RegisterPage() {
   };
 
   return (
-    <Container maxWidth="sm">
-      <Paper elevation={3} sx={{ padding: 4, mt: 8 }}>
-        <Typography variant="h4" gutterBottom align="center">
-          Inscription
-        </Typography>
+    <div className="register-container">
+      <div className="box">
+        <span className="borderLine"></span>
         <form onSubmit={handleSubmit}>
-          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
-            <TextField
-              label="Nom d'utilisateur"
-              name="username"
+          <h2>Inscription</h2>
+          {errors.username && <p className="error">{errors.username}</p>}
+          {errors.email && <p className="error">{errors.email}</p>}
+          {errors.password && <p className="error">{errors.password}</p>}
+          <div className="inputBox">
+            <input
               type="text"
+              name="username"
               value={formData.username}
               onChange={handleChange}
-              error={!!errors.username}
-              helperText={errors.username}
-              fullWidth
               required
             />
-            <TextField
-              label="Email"
-              name="email"
+            <span>Nom d&apos;utilisateur</span>
+            <i></i>
+          </div>
+          <div className="inputBox">
+            <input
               type="email"
+              name="email"
               value={formData.email}
               onChange={handleChange}
-              error={!!errors.email}
-              helperText={errors.email}
-              fullWidth
               required
             />
-            <TextField
-              label="Mot de passe"
-              name="password"
+            <span>Email</span>
+            <i></i>
+          </div>
+          <div className="inputBox">
+            <input
               type="password"
+              name="password"
               value={formData.password}
               onChange={handleChange}
-              error={!!errors.password}
-              helperText={errors.password}
-              fullWidth
               required
             />
-            <Button type="submit" variant="contained" color="primary" fullWidth>
-              S&apos;inscrire
-            </Button>
-          </Box>
+            <span>Mot de passe</span>
+            <i></i>
+          </div>
+          <input type="submit" id="submit" value="S'inscrire" />
         </form>
-      </Paper>
-    </Container>
+      </div>
+    </div>
   );
 }
 
