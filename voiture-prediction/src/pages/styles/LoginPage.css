@@ -1,8 +1,9 @@
+/* Règles générales */
 body, html {
   margin: 0;
   padding: 0;
   height: 100%;
-  background: #c6deef; /* Couleur de fond */
+  background: #c6deef;
   font-family: 'Poppins', sans-serif;
 }
 
@@ -11,21 +12,21 @@ body, html {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  min-height: 100vh; /* Remplit toute la hauteur */
-  background: #c6deef; /* Fond uniforme */
-  overflow: hidden; /* Empêche les débordements */
+  min-height: 100vh;
+  background: #c6deef;
+  overflow: hidden;
 }
 
 .box {
   position: relative;
   width: 380px;
   height: 450px;
-  background: #ffffff; /* Couleur blanche pour le contraste */
+  background: #ffffff;
   border-radius: 8px;
   overflow: hidden;
   padding: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  z-index: 2; /* Assurez-vous que le formulaire reste visible */
+  z-index: 2;
 }
 
 .box::before,
@@ -44,24 +45,6 @@ body, html {
 
 .box::after {
   animation-delay: -3s;
-}
-
-.borderLine::before,
-.borderLine::after {
-  content: '';
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 380px;
-  height: 420px;
-  background: linear-gradient(0deg, transparent, transparent, #ff4081, #ff4081);
-  z-index: 0; /* En dessous du formulaire */
-  transform-origin: bottom right;
-  animation: animate 6s linear infinite;
-}
-
-.borderLine::after {
-  animation-delay: -1.5s;
 }
 
 @keyframes animate {
@@ -119,7 +102,7 @@ body, html {
 .box form .inputBox span {
   position: absolute;
   left: 0;
-  top: -10px; /* Ajustement pour un alignement parfait */
+  top: -10px; /* Ajustement pour un alignement par défaut */
   pointer-events: none;
   color: #8f8f8f;
   font-size: 1em;
@@ -130,17 +113,25 @@ body, html {
 /* Spécifique au champ "Nom d'utilisateur" */
 .box form .inputBox input[name="username"]:focus ~ span,
 .box form .inputBox input[name="username"]:valid ~ span {
-    top: -33px; /* Ajustement spécifique */
-    font-size: 0.8em;
-    color: #0288d1;
+  top: -33px;
+  font-size: 0.8em;
+  color: #0288d1;
+}
+
+/* Spécifique au champ "Mot de passe" */
+.box form .inputBox input[name="password"]:focus ~ span,
+.box form .inputBox input[name="password"]:valid ~ span {
+  top: -30px;
+  font-size: 0.8em;
+  color: #0288d1;
 }
 
 /* Règles générales pour les autres champs */
 .box form .inputBox input:focus ~ span,
 .box form .inputBox input:valid ~ span {
-    top: -20px; /* Règle générale pour les autres champs */
-    font-size: 0.8em;
-    color: #0288d1;
+  top: -20px; /* Règle générale */
+  font-size: 0.8em;
+  color: #0288d1;
 }
 
 .box form .links {
