@@ -5,6 +5,7 @@ import KilometrageVsPrixChart from "../components/KilometrageVsPrixChart";
 import ModelPerformanceChart from "../components/ModelPerformanceChart";
 import LearningCurveChart from "../components/LearningCurveChart"; // Import du composant
 import { Container, Typography, Box } from "@mui/material";
+import process from 'process'; // Ajout de l'importation de process si nécessaire
 
 function VisualizationPage() {
   const [learningCurveData, setLearningCurveData] = useState({
