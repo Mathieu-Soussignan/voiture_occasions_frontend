@@ -93,7 +93,7 @@ L'application est accessible via le frontend React, qui tourne par défaut sur `
 |--------------------------|---------|-------|--------------------------------|
 | Random Forest            | 2440.84 | 0.88  | Moins performant que la version améliorée. |
 | Random Forest Amélioré   | 2258.58 | 0.89  | Modèle sélectionné. Meilleur équilibre. |
-| CatBoost                 | 2674.20 | 0.87  | Trop complexe pour ce cas d'usage. |
+| CatBoost                 | 2674.20 | 0.93  | Trop complexe pour ce cas d'usage. |
 | XGBoost                  | 2384.68 | 0.88  | Plus lent sans gain significatif. |
 
 Le Random Forest amélioré a démontré une précision accrue tout en restant rapide et simple à intégrer.
