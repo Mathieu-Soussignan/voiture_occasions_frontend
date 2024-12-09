@@ -1,3 +1,5 @@
+import { useState, useEffect } from "react";
+import axios from "axios";
 import AnnéeParMarqueChart from "../components/AnnéeParMarqueChart";
 import KilometrageVsPrixChart from "../components/KilometrageVsPrixChart";
 import ModelPerformanceChart from "../components/ModelPerformanceChart";
@@ -5,6 +7,31 @@ import LearningCurveChart from "../components/LearningCurveChart"; // Import du 
 import { Container, Typography, Box } from "@mui/material";
 
 function VisualizationPage() {
+  const [learningCurveData, setLearningCurveData] = useState({
+    trainingSizes: [],
+    trainingScores: [],
+    validationScores: [],
+  });
+
+  useEffect(() => {
+    const fetchLearningCurveData = async () => {
+      try {
+        const response = await axios.get(
+          `${process.env.REACT_APP_BACKEND_URL}/data/learning-curve-random-forest`
+        );
+        console.log("API Response for Learning Curve:", response.data); // Vérifie les données renvoyées par l'API
+        setLearningCurveData(response.data);
+      } catch (error) {
+        console.error("Erreur lors de la récupération des données de la courbe d'apprentissage :", error);
+      }
+    };
+
+    fetchLearningCurveData();
+  }, []);
+
+  // Vérification des données pour chaque composant
+  console.log("Learning Curve Data:", learningCurveData);
+
   return (
     <Container maxWidth="lg" sx={{ my: 4 }}>
       <Typography variant="h4" gutterBottom>
@@ -29,7 +56,7 @@ function VisualizationPage() {
 
         {/* Explications */}
         <Typography variant="body1" sx={{ my: 2 }}>
-          Ce graphique compare les performances des différents modèles testés pour la prédiction des prix des voitures d'occasion. 
+          Ce graphique compare les performances des différents modèles testés pour la prédiction des prix des voitures d&apos;occasion. 
           Voici les critères analysés :
         </Typography>
         <ul>
@@ -58,8 +85,17 @@ function VisualizationPage() {
           si plus de données permettraient d&apos;améliorer les performances.
         </Typography>
 
+        {/* Vérifiez les props passées */}
+        {console.log("Training Sizes Passed to LearningCurveChart:", learningCurveData.trainingSizes)}
+        {console.log("Training Scores Passed to LearningCurveChart:", learningCurveData.trainingScores)}
+        {console.log("Validation Scores Passed to LearningCurveChart:", learningCurveData.validationScores)}
+
         {/* Graphique de la courbe d'apprentissage */}
-        <LearningCurveChart />
+        <LearningCurveChart
+          trainingSizes={learningCurveData.trainingSizes}
+          trainingScores={learningCurveData.trainingScores}
+          validationScores={learningCurveData.validationScores}
+        />
       </Box>
     </Container>
   );
