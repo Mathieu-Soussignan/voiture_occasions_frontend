@@ -1,5 +1,6 @@
 import AnnéeParMarqueChart from "../components/AnnéeParMarqueChart";
 import KilometrageVsPrixChart from "../components/KilometrageVsPrixChart";
+import ModelPerformanceChart from "../components/ModelPerformanceChart";
 import { Container, Typography, Box } from "@mui/material";
 
 function VisualizationPage() {
@@ -14,7 +15,12 @@ function VisualizationPage() {
       <Box sx={{ mb: 4 }}>
         <KilometrageVsPrixChart />
       </Box>
-      {/* Ajouter d'autres composants de visualisation ici */}
+      <Box sx={{ mb: 4 }}>
+        <Typography variant="h5" gutterBottom>
+          Comparaison des Performances des Modèles
+        </Typography>
+        <ModelPerformanceChart />
+      </Box>
     </Container>
   );
 }
