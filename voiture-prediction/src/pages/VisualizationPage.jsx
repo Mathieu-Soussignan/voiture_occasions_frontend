@@ -1,6 +1,7 @@
 import AnnéeParMarqueChart from "../components/AnnéeParMarqueChart";
 import KilometrageVsPrixChart from "../components/KilometrageVsPrixChart";
 import ModelPerformanceChart from "../components/ModelPerformanceChart";
+import LearningCurveChart from "../components/LearningCurveChart"; // Import du composant
 import { Container, Typography, Box } from "@mui/material";
 
 function VisualizationPage() {
@@ -42,6 +43,23 @@ function VisualizationPage() {
 
         {/* Graphique des performances */}
         <ModelPerformanceChart />
+      </Box>
+
+      {/* Courbe d'apprentissage */}
+      <Box sx={{ mb: 4 }}>
+        <Typography variant="h5" gutterBottom>
+          Courbe d&apos;Apprentissage du Random Forest Amélioré
+        </Typography>
+
+        {/* Explications */}
+        <Typography variant="body1" sx={{ my: 2 }}>
+          La courbe d&apos;apprentissage illustre comment le modèle Random Forest amélioré se comporte en fonction de la taille des données 
+          d&apos;entraînement. Cela permet d&apos;évaluer si le modèle souffre d&apos;un biais ou d&apos;une variance élevée et d&apos;identifier
+          si plus de données permettraient d&apos;améliorer les performances.
+        </Typography>
+
+        {/* Graphique de la courbe d'apprentissage */}
+        <LearningCurveChart />
       </Box>
     </Container>
   );
