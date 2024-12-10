@@ -5,7 +5,6 @@ import KilometrageVsPrixChart from "../components/KilometrageVsPrixChart";
 import ModelPerformanceChart from "../components/ModelPerformanceChart";
 import LearningCurveChart from "../components/LearningCurveChart"; // Import du composant
 import { Container, Typography, Box } from "@mui/material";
-import process from 'process'; // Ajout de l'importation de process si nécessaire
 
 function VisualizationPage() {
   const [learningCurveData, setLearningCurveData] = useState({
@@ -17,18 +16,18 @@ function VisualizationPage() {
   useEffect(() => {
     const fetchLearningCurveData = async () => {
       try {
-        const response = await axios.get(
-          `${process.env.REACT_APP_BACKEND_URL}/data/learning-curve-random-forest`
-        );
-        console.log("API Response for Learning Curve:", response.data); // Vérifie les données renvoyées par l'API
+        const BACKEND_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
+        const response = await axios.get(`${BACKEND_URL}/data/learning-curve-random-forest`);
+        console.log("API Response for Learning Curve:", response.data);
         setLearningCurveData(response.data);
       } catch (error) {
         console.error("Erreur lors de la récupération des données de la courbe d'apprentissage :", error);
       }
     };
-
+  
     fetchLearningCurveData();
   }, []);
+  
 
   // Vérification des données pour chaque composant
   console.log("Learning Curve Data:", learningCurveData);
