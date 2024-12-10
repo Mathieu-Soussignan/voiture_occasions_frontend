@@ -16,7 +16,7 @@ function VisualizationPage() {
   useEffect(() => {
     const fetchLearningCurveData = async () => {
       try {
-        const BACKEND_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
+        const BACKEND_URL = import.meta.env.VITE_API_BASE_URL;
         const response = await axios.get(`${BACKEND_URL}/data/learning-curve-random-forest`);
         console.log("API Response for Learning Curve:", response.data);
         setLearningCurveData(response.data);
