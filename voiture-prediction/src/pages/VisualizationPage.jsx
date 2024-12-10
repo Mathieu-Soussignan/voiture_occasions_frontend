@@ -3,8 +3,8 @@ import axios from "axios";
 import AnnéeParMarqueChart from "../components/AnnéeParMarqueChart";
 import KilometrageVsPrixChart from "../components/KilometrageVsPrixChart";
 import ModelPerformanceChart from "../components/ModelPerformanceChart";
-import LearningCurveChart from "../components/LearningCurveChart";
-import { Container, Typography, Box, CircularProgress } from "@mui/material";
+// import LearningCurveChart from "../components/LearningCurveChart";
+import { Container, Typography, Box } from "@mui/material";
 
 function VisualizationPage() {
   const [learningCurveData, setLearningCurveData] = useState({
@@ -56,6 +56,14 @@ function VisualizationPage() {
   // Vérification des données
   console.log("Learning Curve Data:", learningCurveData);
 
+  if (loading) {
+    return <div>Chargement...</div>;
+  }
+
+  if (error) {
+    return <div>Erreur : {error.message}</div>;
+  }
+
   return (
     <Container maxWidth="lg" sx={{ my: 4 }}>
       <Typography variant="h4" gutterBottom>
@@ -102,40 +110,6 @@ function VisualizationPage() {
 
         {/* Graphique des performances */}
         <ModelPerformanceChart />
-      </Box>
-
-      {/* Courbe d'apprentissage */}
-      <Box sx={{ mb: 4 }}>
-        <Typography variant="h5" gutterBottom>
-          Courbe d&apos;Apprentissage du Random Forest Amélioré
-        </Typography>
-
-        <Typography variant="body1" sx={{ my: 2 }}>
-          La courbe d&apos;apprentissage illustre comment le modèle Random Forest amélioré se
-          comporte en fonction de la taille des données d&apos;entraînement. Cela permet
-          d&apos;évaluer si le modèle souffre d&apos;un biais ou d&apos;une variance élevée et
-          d&apos;identifier si plus de données permettraient d&apos;améliorer les performances.
-        </Typography>
-
-        {/* Chargement */}
-        {loading && (
-          <Box display="flex" justifyContent="center" alignItems="center">
-            <CircularProgress />
-            <Typography sx={{ ml: 2 }}>Chargement des données...</Typography>
-          </Box>
-        )}
-
-        {/* Erreur */}
-        {error && <Typography color="error">{error}</Typography>}
-
-        {/* Affichage du graphique */}
-        {!loading && !error && (
-          <LearningCurveChart
-            trainingSizes={learningCurveData.trainingSizes}
-            trainingScores={learningCurveData.trainingScores}
-            validationScores={learningCurveData.validationScores}
-          />
-        )}
       </Box>
     </Container>
   );
