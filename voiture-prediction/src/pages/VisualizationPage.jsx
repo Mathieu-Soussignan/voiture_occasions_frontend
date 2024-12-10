@@ -3,8 +3,8 @@ import axios from "axios";
 import AnnéeParMarqueChart from "../components/AnnéeParMarqueChart";
 import KilometrageVsPrixChart from "../components/KilometrageVsPrixChart";
 import ModelPerformanceChart from "../components/ModelPerformanceChart";
-import LearningCurveChart from "../components/LearningCurveChart"; // Import du composant
-import { Container, Typography, Box } from "@mui/material";
+import LearningCurveChart from "../components/LearningCurveChart";
+import { Container, Typography, Box, CircularProgress } from "@mui/material";
 
 function VisualizationPage() {
   const [learningCurveData, setLearningCurveData] = useState({
@@ -12,25 +12,30 @@ function VisualizationPage() {
     trainingScores: [],
     validationScores: [],
   });
-
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchLearningCurveData = async () => {
       try {
-        const BACKEND_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
-        console.log("Fetching learning curve data from:", `${BACKEND_URL}/data/learning-curve-random-forest`);
+        const BACKEND_URL =
+          import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
+        console.log("Fetching learning curve data from:", `${BACKEND_URL}/learning-curve-random-forest`);
 
-        const response = await axios.get(`${BACKEND_URL}/data/learning-curve-random-forest`);
+        const response = await axios.get(`${BACKEND_URL}/learning-curve-random-forest`);
         console.log("API Response for Learning Curve:", response.data);
 
         if (
-          response.data.trainingSizes &&
-          response.data.trainingScores &&
-          response.data.validationScores
+          response.data &&
+          Array.isArray(response.data.training_sizes) &&
+          Array.isArray(response.data.training_scores) &&
+          Array.isArray(response.data.validation_scores)
         ) {
-          setLearningCurveData(response.data);
+          setLearningCurveData({
+            trainingSizes: response.data.training_sizes,
+            trainingScores: response.data.training_scores,
+            validationScores: response.data.validation_scores,
+          });
         } else {
           throw new Error("Invalid data format received from the API.");
         }
@@ -39,7 +44,7 @@ function VisualizationPage() {
           "Erreur lors de la récupération des données de la courbe d'apprentissage :",
           error
         );
-        setError("Erreur lors du chargement des données.");
+        setError("Erreur lors du chargement des données. Veuillez réessayer.");
       } finally {
         setLoading(false);
       }
@@ -112,10 +117,18 @@ function VisualizationPage() {
           d&apos;identifier si plus de données permettraient d&apos;améliorer les performances.
         </Typography>
 
-        {/* Chargement ou erreur */}
-        {loading && <Typography>Chargement des données...</Typography>}
+        {/* Chargement */}
+        {loading && (
+          <Box display="flex" justifyContent="center" alignItems="center">
+            <CircularProgress />
+            <Typography sx={{ ml: 2 }}>Chargement des données...</Typography>
+          </Box>
+        )}
+
+        {/* Erreur */}
         {error && <Typography color="error">{error}</Typography>}
 
+        {/* Affichage du graphique */}
         {!loading && !error && (
           <LearningCurveChart
             trainingSizes={learningCurveData.trainingSizes}
