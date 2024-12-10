@@ -9,9 +9,9 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 
-// Enregistrer les composants de base de Chart.js
+// Enregistrement des composants de Chart.js
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -23,60 +23,76 @@ ChartJS.register(
 );
 
 const LearningCurveChart = ({ trainingSizes, trainingScores, validationScores }) => {
-    console.log("Training Sizes:", trainingSizes);
-    console.log("Training Scores:", trainingScores);
-    console.log("Validation Scores:", validationScores);
-  
-    const data = {
-      labels: trainingSizes,
-      datasets: [
-        {
-          label: "Erreur d'entraînement (MSE)",
-          data: trainingScores,
-          borderColor: "rgba(54, 162, 235, 1)",
-          backgroundColor: "rgba(54, 162, 235, 0.5)",
-          tension: 0.4,
-        },
-        {
-          label: "Erreur de validation (MSE)",
-          data: validationScores,
-          borderColor: "rgba(255, 99, 132, 1)",
-          backgroundColor: "rgba(255, 99, 132, 0.5)",
-          tension: 0.4,
-        },
-      ],
-    };
-  
-    const options = {
-      responsive: true,
-      plugins: {
-        legend: {
-          position: "top",
-        },
+  // Logs pour vérifier les données
+  console.log("Training Sizes:", trainingSizes);
+  console.log("Training Scores:", trainingScores);
+  console.log("Validation Scores:", validationScores);
+
+  // Vérification de la validité des données
+  const isDataValid =
+    trainingSizes.length > 0 && trainingScores.length > 0 && validationScores.length > 0;
+
+  // Données pour le graphique
+  const data = {
+    labels: trainingSizes,
+    datasets: [
+      {
+        label: "Erreur d'entraînement (MSE)",
+        data: trainingScores,
+        borderColor: "rgba(54, 162, 235, 1)",
+        backgroundColor: "rgba(54, 162, 235, 0.5)",
+        tension: 0.4,
+      },
+      {
+        label: "Erreur de validation (MSE)",
+        data: validationScores,
+        borderColor: "rgba(255, 99, 132, 1)",
+        backgroundColor: "rgba(255, 99, 132, 0.5)",
+        tension: 0.4,
+      },
+    ],
+  };
+
+  // Options pour le graphique
+  const options = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: "top",
+      },
+      title: {
+        display: true,
+        text: "Courbe d'apprentissage - Random Forest amélioré",
+      },
+    },
+    scales: {
+      x: {
         title: {
           display: true,
-          text: "Courbe d'apprentissage - Random Forest amélioré",
+          text: "Taille des données d'entraînement",
         },
       },
-      scales: {
-        x: {
-          title: {
-            display: true,
-            text: "Taille des données d'entraînement",
-          },
-        },
-        y: {
-          title: {
-            display: true,
-            text: "Erreur quadratique moyenne (MSE)",
-          },
+      y: {
+        title: {
+          display: true,
+          text: "Erreur quadratique moyenne (MSE)",
         },
       },
-    };
-  
-    return <Line data={data} options={options} />;
+    },
   };
-  
+
+  // Rendu conditionnel si les données sont invalides
+  if (!isDataValid) {
+    return (
+      <div style={{ textAlign: "center", color: "red" }}>
+        <p>Aucune donnée valide disponible pour le graphique.</p>
+      </div>
+    );
+  }
+
+  return <Line data={data} options={options} />;
+};
+
 LearningCurveChart.propTypes = {
   trainingSizes: PropTypes.array.isRequired,
   trainingScores: PropTypes.array.isRequired,

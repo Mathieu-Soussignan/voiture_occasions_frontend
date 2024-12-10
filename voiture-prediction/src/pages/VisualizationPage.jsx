@@ -13,23 +13,42 @@ function VisualizationPage() {
     validationScores: [],
   });
 
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     const fetchLearningCurveData = async () => {
       try {
-        const BACKEND_URL = import.meta.env.VITE_API_BASE_URL;
+        const BACKEND_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
+        console.log("Fetching learning curve data from:", `${BACKEND_URL}/data/learning-curve-random-forest`);
+
         const response = await axios.get(`${BACKEND_URL}/data/learning-curve-random-forest`);
         console.log("API Response for Learning Curve:", response.data);
-        setLearningCurveData(response.data);
+
+        if (
+          response.data.trainingSizes &&
+          response.data.trainingScores &&
+          response.data.validationScores
+        ) {
+          setLearningCurveData(response.data);
+        } else {
+          throw new Error("Invalid data format received from the API.");
+        }
       } catch (error) {
-        console.error("Erreur lors de la récupération des données de la courbe d'apprentissage :", error);
+        console.error(
+          "Erreur lors de la récupération des données de la courbe d'apprentissage :",
+          error
+        );
+        setError("Erreur lors du chargement des données.");
+      } finally {
+        setLoading(false);
       }
     };
-  
+
     fetchLearningCurveData();
   }, []);
-  
 
-  // Vérification des données pour chaque composant
+  // Vérification des données
   console.log("Learning Curve Data:", learningCurveData);
 
   return (
@@ -54,18 +73,26 @@ function VisualizationPage() {
           Comparaison des Performances des Modèles
         </Typography>
 
-        {/* Explications */}
         <Typography variant="body1" sx={{ my: 2 }}>
-          Ce graphique compare les performances des différents modèles testés pour la prédiction des prix des voitures d&apos;occasion. 
-          Voici les critères analysés :
+          Ce graphique compare les performances des différents modèles testés pour la prédiction
+          des prix des voitures d&apos;occasion. Voici les critères analysés :
         </Typography>
         <ul>
-          <li><strong>R² :</strong> Indique la proportion de variance expliquée par le modèle.</li>
-          <li><strong>RMSE :</strong> Mesure l&apos;erreur quadratique moyenne des prédictions (plus faible est meilleur).</li>
-          <li><strong>MAE :</strong> Mesure l&apos;erreur absolue moyenne des prédictions (plus faible est meilleur).</li>
+          <li>
+            <strong>R² :</strong> Indique la proportion de variance expliquée par le modèle.
+          </li>
+          <li>
+            <strong>RMSE :</strong> Mesure l&apos;erreur quadratique moyenne des prédictions (plus
+            faible est meilleur).
+          </li>
+          <li>
+            <strong>MAE :</strong> Mesure l&apos;erreur absolue moyenne des prédictions (plus
+            faible est meilleur).
+          </li>
         </ul>
         <Typography variant="body1" sx={{ my: 2 }}>
-          Le modèle <strong>Random Forest amélioré</strong> a été choisi pour sa meilleure précision globale (R² = 0.89) et des erreurs (RMSE et MAE) plus faibles que les autres modèles.
+          Le modèle <strong>Random Forest amélioré</strong> a été choisi pour sa meilleure précision
+          globale (R² = 0.89) et des erreurs (RMSE et MAE) plus faibles que les autres modèles.
         </Typography>
 
         {/* Graphique des performances */}
@@ -78,24 +105,24 @@ function VisualizationPage() {
           Courbe d&apos;Apprentissage du Random Forest Amélioré
         </Typography>
 
-        {/* Explications */}
         <Typography variant="body1" sx={{ my: 2 }}>
-          La courbe d&apos;apprentissage illustre comment le modèle Random Forest amélioré se comporte en fonction de la taille des données 
-          d&apos;entraînement. Cela permet d&apos;évaluer si le modèle souffre d&apos;un biais ou d&apos;une variance élevée et d&apos;identifier
-          si plus de données permettraient d&apos;améliorer les performances.
+          La courbe d&apos;apprentissage illustre comment le modèle Random Forest amélioré se
+          comporte en fonction de la taille des données d&apos;entraînement. Cela permet
+          d&apos;évaluer si le modèle souffre d&apos;un biais ou d&apos;une variance élevée et
+          d&apos;identifier si plus de données permettraient d&apos;améliorer les performances.
         </Typography>
 
-        {/* Vérifiez les props passées */}
-        {console.log("Training Sizes Passed to LearningCurveChart:", learningCurveData.trainingSizes)}
-        {console.log("Training Scores Passed to LearningCurveChart:", learningCurveData.trainingScores)}
-        {console.log("Validation Scores Passed to LearningCurveChart:", learningCurveData.validationScores)}
+        {/* Chargement ou erreur */}
+        {loading && <Typography>Chargement des données...</Typography>}
+        {error && <Typography color="error">{error}</Typography>}
 
-        {/* Graphique de la courbe d'apprentissage */}
-        <LearningCurveChart
-          trainingSizes={learningCurveData.trainingSizes}
-          trainingScores={learningCurveData.trainingScores}
-          validationScores={learningCurveData.validationScores}
-        />
+        {!loading && !error && (
+          <LearningCurveChart
+            trainingSizes={learningCurveData.trainingSizes}
+            trainingScores={learningCurveData.trainingScores}
+            validationScores={learningCurveData.validationScores}
+          />
+        )}
       </Box>
     </Container>
   );
