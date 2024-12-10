@@ -173,7 +173,7 @@ select {
 }
 
 /* From Uiverse.io by AlimurtuzaCodes */ 
-/* Centrage et style du conteneur */
+/* Conteneur pour centrer */
 .button-container {
   display: flex;
   justify-content: center;
@@ -184,31 +184,32 @@ select {
 /* Bouton personnalisé */
 .btn {
   border: none;
-  width: 15em;
-  height: 5em;
+  width: auto; /* Ajuste automatiquement selon le texte */
+  padding: 1rem 2rem; /* Ajoute des marges */
   border-radius: 3em;
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 12px;
-  background: #1C1A1C;
+  background: #6c757d; /* Couleur grise plus douce */
   cursor: pointer;
   transition: all 450ms ease-in-out;
 }
 
 .sparkle {
-  fill: #AAAAAA;
+  fill: #f8f9fa; /* Couleur plus claire pour l'icône */
   transition: all 800ms ease;
 }
 
 .text {
   font-weight: 600;
-  color: #AAAAAA;
+  color: #f8f9fa; /* Texte clair */
   font-size: medium;
+  white-space: nowrap; /* Empêche le texte de se diviser sur deux lignes */
 }
 
 .btn:hover {
-  background: linear-gradient(0deg, #1e90ff, #4682b4); /* Couleurs bleues */
+  background: linear-gradient(0deg, #1e90ff, #4682b4); /* Dégradé bleu au survol */
   box-shadow: inset 0px 1px 0px 0px rgba(255, 255, 255, 0.4),
     inset 0px -4px 0px 0px rgba(0, 0, 0, 0.2),
     0px 0px 0px 4px rgba(255, 255, 255, 0.2),
