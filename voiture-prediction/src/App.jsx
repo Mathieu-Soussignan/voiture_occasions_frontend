@@ -13,6 +13,8 @@ import { CssBaseline, Box, useMediaQuery } from '@mui/material';
 import { useAuth } from './hooks/useAuth';
 import { useState } from 'react';
 
+import './App.css';
+
 function App() {
   const location = useLocation();
   const { isLoggedIn } = useAuth();
