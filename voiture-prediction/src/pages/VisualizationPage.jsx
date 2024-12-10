@@ -1,69 +1,9 @@
-import { useState, useEffect } from "react";
-import axios from "axios";
 import AnnéeParMarqueChart from "../components/AnnéeParMarqueChart";
 import KilometrageVsPrixChart from "../components/KilometrageVsPrixChart";
 import ModelPerformanceChart from "../components/ModelPerformanceChart";
-// import LearningCurveChart from "../components/LearningCurveChart";
 import { Container, Typography, Box } from "@mui/material";
 
 function VisualizationPage() {
-  const [learningCurveData, setLearningCurveData] = useState({
-    trainingSizes: [],
-    trainingScores: [],
-    validationScores: [],
-  });
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchLearningCurveData = async () => {
-      try {
-        const BACKEND_URL =
-          import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
-        console.log("Fetching learning curve data from:", `${BACKEND_URL}/learning-curve-random-forest`);
-
-        const response = await axios.get(`${BACKEND_URL}/learning-curve-random-forest`);
-        console.log("API Response for Learning Curve:", response.data);
-
-        if (
-          response.data &&
-          Array.isArray(response.data.training_sizes) &&
-          Array.isArray(response.data.training_scores) &&
-          Array.isArray(response.data.validation_scores)
-        ) {
-          setLearningCurveData({
-            trainingSizes: response.data.training_sizes,
-            trainingScores: response.data.training_scores,
-            validationScores: response.data.validation_scores,
-          });
-        } else {
-          throw new Error("Invalid data format received from the API.");
-        }
-      } catch (error) {
-        console.error(
-          "Erreur lors de la récupération des données de la courbe d'apprentissage :",
-          error
-        );
-        setError("Erreur lors du chargement des données. Veuillez réessayer.");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchLearningCurveData();
-  }, []);
-
-  // Vérification des données
-  console.log("Learning Curve Data:", learningCurveData);
-
-  if (loading) {
-    return <div>Chargement...</div>;
-  }
-
-  if (error) {
-    return <div>Erreur : {error.message}</div>;
-  }
-
   return (
     <Container maxWidth="lg" sx={{ my: 4 }}>
       <Typography variant="h4" gutterBottom>
